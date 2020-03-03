@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+       style="@style/LinearLayout.Vertical">
+        <androidx.cardview.widget.CardView style="@style/Card">
+
+            <LinearLayout style="@style/LinearLayout.Vertical">
+
+                <LinearLayout
+                    android:id="@+id/view_product_list"
+                    style="@style/LinearLayout.Vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        style="@style/LinearLayout.Horizontal"
+                        android:layout_marginTop="@dimen/dimen_10sdp"
+                        android:background="@drawable/bg_border">
+
+                        <View style="@style/vertical_line_separator" />
+
+                        <TextView
+                            android:id="@+id/txt_name"
+                            style="@style/Text"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="@dimen/dimen_5sdp"
+                            android:layout_weight="6"
+                            android:gravity="center_horizontal"
+                            android:text="Name"
+                            android:textStyle="bold" />
+
+                        <View style="@style/vertical_line_separator" />
+
+                        <TextView
+                            style="@style/Text.primary"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="@dimen/dimen_5sdp"
+                            android:layout_weight="6"
+                            android:gravity="center_horizontal"
+                            android:text="Description"
+                            android:textStyle="bold" />
+
+                        <View style="@style/vertical_line_separator" />
+
+                        <TextView
+                            style="@style/Text.primary"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="@dimen/dimen_5sdp"
+                            android:layout_weight="6"
+                            android:gravity="center_horizontal"
+                            android:text="Cost"
+                            android:textStyle="bold" />
+
+                        <View style="@style/vertical_line_separator" />
+
+                        <TextView
+                            style="@style/Text.primary"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="@dimen/dimen_5sdp"
+                            android:layout_weight="6"
+                            android:gravity="center_horizontal"
+                            android:text="Duration"
+                            android:textStyle="bold" />
+
+                        <View style="@style/vertical_line_separator" />
+
+                    </LinearLayout>
+
+                    <ScrollView
+                        style="@style/ScrollView"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:id="@+id/view_order_list"
+                            style="@style/LinearLayout.Vertical"></LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>
