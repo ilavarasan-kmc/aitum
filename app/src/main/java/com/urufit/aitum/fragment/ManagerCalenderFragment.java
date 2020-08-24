@@ -1,22 +1,35 @@
 package com.urufit.aitum.fragment;
 
+import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.urufit.aitum.R;
+import com.urufit.aitum.ui.Toolbar_customs;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +38,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
-public class ManagerCalenderFragment extends Fragment {
+public class ManagerCalenderFragment extends Toolbar_customs {
 
     private static final String TAG = "MainActivity";
     private Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
@@ -34,19 +48,29 @@ public class ManagerCalenderFragment extends Fragment {
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
     private boolean shouldShow = false;
     private CompactCalendarView compactCalendarView;
-    private ActionBar toolbar;
+    public Toolbar toolbar;
+
+    MenuItem fav;
+
+    long lnsTime, lneTime;
 
     public static ManagerCalenderFragment newInstance() {
         return  new ManagerCalenderFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       // return inflater.inflate(R.layout.fragment_manager_calender, container, false);
-        View mainTabView = inflater.inflate(R.layout.fragment_manager_calender,container,false);
-        final List<String> mutableBookings = new ArrayList<>();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_manager_calender);
 
-        final ListView bookingsListView = mainTabView.findViewById(R.id.bookings_listview);
+        toolbar = findViewById(R.id.toolbar_customs);
+      //  toolbar.setTitle("ATIUM");
+        setSupportActionBar(toolbar);
+
+        final List<String> mutableBookings = new ArrayList<>();
+        TextView add_events=findViewById(R.id.add_events);
+        TextView txt_date=findViewById(R.id.txt_date);
+        final ListView bookingsListView = findViewById(R.id.bookings_listview);
         /*final Button showPreviousMonthBut = getView().findViewById(R.id.prev_button);
         final Button showNextMonthBut = getView().findViewById(R.id.next_button);
         final Button slideCalendarBut = getView().findViewById(R.id.slide_calendar);
@@ -54,9 +78,9 @@ public class ManagerCalenderFragment extends Fragment {
         final Button setLocaleBut =  getView().findViewById(R.id.set_locale);
         final Button removeAllEventsBut =  getView().findViewById(R.id.remove_all_events);*/
 
-        final ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mutableBookings);
+        final ArrayAdapter adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, mutableBookings);
         bookingsListView.setAdapter(adapter);
-        compactCalendarView =  mainTabView.findViewById(R.id.compactcalendar_view);
+        compactCalendarView =  findViewById(R.id.compactcalendar_view);
 
         // below allows you to configure color for the current day in the month
         // compactCalendarView.setCurrentDayBackgroundColor(getResources().getColor(R.color.black));
@@ -70,6 +94,7 @@ public class ManagerCalenderFragment extends Fragment {
         loadEvents();
         loadEventsForYear(2017);
         compactCalendarView.invalidate();
+
 
         logEventsByMonth(compactCalendarView);
 
@@ -86,14 +111,16 @@ public class ManagerCalenderFragment extends Fragment {
         // compactCalendarView.setShouldShowMondayAsFirstDay(false);
 
         //set initial title
-        toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        toolbar.setTitle(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
+     //   toolbar = ((AppCompatActivity) getApplicationContext()).getSupportActionBar();
+        txt_date.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
+
+
 
         //set title on calendar scroll
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                toolbar.setTitle(dateFormatForMonth.format(dateClicked));
+                txt_date.setText(dateFormatForMonth.format(dateClicked));
                 List<Event> bookingsFromMap = compactCalendarView.getEvents(dateClicked);
                 Log.d(TAG, "inside onclick " + dateFormatForDisplaying.format(dateClicked));
                 if (bookingsFromMap != null) {
@@ -109,7 +136,7 @@ public class ManagerCalenderFragment extends Fragment {
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                toolbar.setTitle(dateFormatForMonth.format(firstDayOfNewMonth));
+                txt_date.setText(dateFormatForMonth.format(firstDayOfNewMonth));
             }
         });
 
@@ -173,7 +200,64 @@ public class ManagerCalenderFragment extends Fragment {
 
         // uncomment below to open onCreate
         //openCalendarOnCreate(v);
-        return  mainTabView;
+
+
+        add_events.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addevent();
+            }
+        });
+
+    }
+
+ /*   @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.nav_add_events) {
+            addevent();
+        }
+        return true;
+    }*/
+
+    private void addevent() {
+
+        DateFormat formatter = new SimpleDateFormat("MMMM dd, yyyy, h:mmaa");
+        Date dateObject;
+        try{
+            String dob_var = "May 05, 2012, 07:10PM";
+
+            dateObject = formatter.parse(dob_var);
+
+            lnsTime = dateObject.getTime();
+            Log.e(null, Long.toString(lnsTime));
+
+            dob_var = "May 06, 2012, 02:10PM";
+
+            dateObject = formatter.parse(dob_var);
+
+            lneTime = dateObject.getTime();
+            Log.e(null, Long.toString(lneTime));
+        }
+
+        catch (java.text.ParseException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Log.i("E11111111111", e.toString());
+        }
+
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra(CalendarContract.Events.TITLE, "");
+        intent.putExtra(CalendarContract.Events.DESCRIPTION, "Description");
+        intent.putExtra(CalendarContract.Events.EVENT_LOCATION, "");
+        intent.putExtra(CalendarContract.Events.DTSTART, lnsTime);
+        intent.putExtra(CalendarContract.Events.DTEND, lneTime);
+        intent.putExtra(CalendarContract.Events.ALL_DAY, "allDayFlag");
+        intent.putExtra(CalendarContract.Events.STATUS, 1);
+        intent.putExtra(CalendarContract.Events.VISIBLE, 0);
+        intent.putExtra(CalendarContract.Events.HAS_ALARM, 1);
+        startActivity(intent);
     }
 
     private void loadEvents() {
