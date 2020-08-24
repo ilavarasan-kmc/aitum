@@ -3,7 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/txt_date"
+      style="@style/Text.Title"
+        android:gravity="center">
+    </TextView>
+
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
+        android:layout_marginTop="@dimen/dimen_10sdp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/compactcalendar_view"
         android:layout_width="fill_parent"
@@ -20,10 +27,26 @@
         app:compactCalendarShouldSelectFirstDayOfMonthOnScroll="true"
         />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <TextView
         android:layout_marginLeft="15dp"
        style="@style/Text.Title"
+        android:layout_width="wrap_content"
         android:text="Events"/>
+
+    <TextView
+        android:layout_marginRight="@dimen/dimen_10sdp"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:id="@+id/add_events"
+        android:layout_marginLeft="15dp"
+        style="@style/Text.Title"
+        android:text="Add event"/>
+
+    </RelativeLayout>
 
     <ListView
         android:layout_marginTop="10dp"

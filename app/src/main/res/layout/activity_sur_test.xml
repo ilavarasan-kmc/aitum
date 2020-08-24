@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+<ScrollView
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textview_q_title"
+            style="?android:textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:lineSpacingMultiplier="1.2"
+            android:padding="16dp"
+            android:text="Title"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+        <com.trafi.ratingseekbar.RatingSeekBar
+            android:id="@+id/rating_seek_bar_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:rsb_max="10"
+            app:rsb_active_color="#1F757B"
+            />
+
+
+
+        <TextView
+            android:id="@+id/rating_label_one"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:gravity="center_horizontal" />
+
+    </LinearLayout>
+
+
+</ScrollView>
+
+
+<include
+    layout="@layout/footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"></include>
+
+
+</LinearLayout>

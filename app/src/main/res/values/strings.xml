@@ -1,5 +1,55 @@
 <resources>
-    <string name="app_name">Aitum</string>
+    <string name="app_name">ATIUM</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="hint_next">Next</string>
+    <string name="hint_finish">Finish</string>
+    <string name="hint_start">Start</string>
+    <string name="hint_submit">Submit</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="home_second">Home Second</string>
+
+    <string name="slide_1_title">Hard work beats talent when talent doesn’t work hard!</string>
+    <string name="slide_1_desc">There are plenty of talented people in the world. As you already know, talent is not enough. Some of the athletes with the most potential never pan out. What separates the good from the great is determination and work ethic.!</string>
+
+    <string name="slide_2_title">Babe Ruth on never giving up</string>
+    <string name="slide_2_desc">The Colossus of Clouds was one of the hardest working players in history. Sure, he had his vices, but no one ever doubted what he did on the field.!</string>
+
+    <string name="slide_3_title">Les Brown on sweet victory.</string>
+    <string name="slide_3_desc">If you have to work hard for anything, the final outcome is that much sweeter. Every ounce of sweat on the ground is another ounce of joy when the scoreboard is in your favor.!</string>
+
+    <string name="slide_4_title">Never say never because limits.!</string>
+    <string name="slide_4_desc">When there is a road block in your way, it is almost always mental. When you place some sort of mental road block, it becomes something to fear..!</string>
+
+    <string-array name="selcet_gender">
+        <item> Gender </item>
+        <item> Male </item>
+        <item> Female </item>
+        <item> Others </item>
+    </string-array>
+
+    <string name="cli_desc1">The mystic cords of memory stretching from every battlefield and patriot grave to every living heart and hearthstone</string>
+    <string name="cli_desc2">Character is like a tree and reputation like a shadow. The shadow is what we think of it the tree is the real thing</string>
+    <string name="cli_desc3">We the people are the rightful masters of both Congress and the courts not to overthrow the Constitution but to overthrow the men who pervert the Constitution</string>
+
+
+    <string name="lbl_set_profile_photo">Set profile image</string>
+    <string name="lbl_take_camera_picture">Take a picture</string>
+    <string name="lbl_choose_from_gallery">Choose from gallery</string>
+    <string name="toast_image_intent_null">Image picker option is missing!</string>
+    <string name="dialog_permission_title">Grant Permissions</string>
+    <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="go_to_settings">GOTO SETTINGS</string>
+
+
 </resources>
+

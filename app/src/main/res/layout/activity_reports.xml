@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_item_edit_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload File"
+        android:textColor="@color/dark_blue"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_backup_black_24dp"/>
+
+
+    <EditText
+        android:layout_marginTop="@dimen/dimen_10sdp"
+        android:padding="@dimen/dimen_10sdp"
+        android:background="@drawable/editext_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|left"
+        android:hint="Text here..."
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxLines="10"
+        android:minLines="6"
+        android:scrollbars="vertical" />
+
+
+    <Button
+        android:id="@+id/btn_choose_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/dimen_10sdp"
+        android:layout_marginTop="20dp"
+        android:background="@color/dark_blue"
+        android:padding="@dimen/dimen_10sdp"
+        android:text="choose_file"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_file_path"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="bottom">
+
+    <Button
+        android:id="@+id/btn_send_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_vertical"
+        android:layout_marginLeft="@dimen/dimen_10sdp"
+        android:layout_marginTop="20dp"
+        android:background="@color/dark_blue"
+        android:padding="@dimen/dimen_10sdp"
+        android:text="Send Report"
+        android:textColor="@color/white" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable name="viewModel" type="com.urufit.aitum.model.ManagerActivityTableModel" />
+    </data>
+<LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,7 +26,18 @@
                 android:layout_weight="6"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_horizontal"
-                android:id="@+id/txt_name"/>
+                android:id="@+id/txt_name"
+                android:text="@={viewModel.name}"/>
+
+            <View style="@style/vertical_line_separator"/>
+
+            <TextView
+                android:layout_margin="@dimen/dimen_5sdp"
+                style="@style/Text.primary"
+                android:layout_weight="5"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                android:text="@={viewModel.description}"/>
 
             <View style="@style/vertical_line_separator"/>
 
@@ -29,16 +46,8 @@
                 style="@style/Text.primary"
                 android:layout_weight="6"
                 android:layout_gravity="center_vertical"
-                android:gravity="center_horizontal"/>
-
-            <View style="@style/vertical_line_separator"/>
-
-            <TextView
-                android:layout_margin="@dimen/dimen_5sdp"
-                style="@style/Text.primary"
-                android:layout_weight="6"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_horizontal" />
+                android:gravity="center_horizontal"
+                android:text="@={viewModel.duration}"/>
 
             <View style="@style/vertical_line_separator" />
 
@@ -47,10 +56,12 @@
                 style="@style/Text.primary"
                 android:layout_weight="6"
                 android:layout_gravity="center_vertical"
-                android:gravity="center_horizontal" />
+                android:gravity="center_horizontal"
+                android:text="@={viewModel.cost}"/>
 
             <View style="@style/vertical_line_separator" />
 
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
+</layout>

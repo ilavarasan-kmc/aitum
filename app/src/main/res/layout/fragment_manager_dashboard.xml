@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back2"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,7 +15,8 @@
         <androidx.cardview.widget.CardView style="@style/Card">
 
             <LinearLayout
-                android:background="@drawable/two"
+
+                android:background="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:orientation="vertical">
@@ -40,10 +42,12 @@
 
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView style="@style/Card">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_activity"
+            style="@style/Card">
 
             <LinearLayout
-                android:background="@drawable/two"
+                android:background="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:orientation="vertical">
@@ -79,7 +83,7 @@
         <androidx.cardview.widget.CardView style="@style/Card">
 
             <LinearLayout
-                android:background="@drawable/two"
+                android:background="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:orientation="vertical">
@@ -108,3 +112,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</layout>

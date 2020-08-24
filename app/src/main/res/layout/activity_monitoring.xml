@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+<ScrollView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/five_dimen"
+        android:background="@color/milk_white">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_welbeing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:elevation="5dp"
+            android:padding="@dimen/card_view_margin"
+            card_view:cardCornerRadius="@dimen/card_radius">
+
+            <RelativeLayout
+                android:id="@+id/relative_wellbeing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/beigng_img_new" />
+
+                <TextView
+                    android:id="@+id/newsTitle"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/thumbnail"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_8dp"
+                    android:padding="@dimen/_8dp"
+                    android:text="Wellbeing"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/min_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/newsInfo"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/newsTitle"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="@dimen/_8dp"
+                    android:layout_marginLeft="@dimen/_8dp"
+                    android:layout_marginBottom="@dimen/_8dp"
+                    android:padding="@dimen/_8dp"
+                    android:text="Listen to the people who love you. Believe that they are worth living for even when you don't believe it."
+                    android:textColor="@color/dark_orange" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_view_welbeing"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:elevation="3dp"
+            android:padding="@dimen/card_view_margin"
+            card_view:cardCornerRadius="@dimen/card_radius">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/thumbnail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/qualicationimgnew" />
+
+                <TextView
+                    android:id="@+id/newsTitle2"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/thumbnail2"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_8dp"
+                    android:padding="@dimen/_8dp"
+                    android:text="Load Quantification"
+                    android:textColor="@color/dark_red"
+                    android:textSize="@dimen/min_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/newsInfo2"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/newsTitle2"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="@dimen/_8dp"
+                    android:layout_marginLeft="@dimen/_8dp"
+                    android:layout_marginBottom="@dimen/_8dp"
+                    android:padding="@dimen/_8dp"
+                    android:text="When it comes to the qualifications that we should demand of our president, to start with, we need someone who will take the job seriously"
+                    android:textColor="@color/light_red" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_view2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:elevation="3dp"
+            android:layout_marginBottom="10dp"
+            android:padding="@dimen/card_view_margin"
+            card_view:cardCornerRadius="@dimen/card_radius">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/thumbnail3"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_thero_new" />
+
+                <TextView
+                    android:id="@+id/newsTitle3"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/thumbnail3"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_8dp"
+                    android:padding="@dimen/_8dp"
+                    android:text="Kinanthropometry"
+                    android:textColor="@color/darkgrey"
+                    android:textSize="@dimen/min_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/newsInfo3"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/newsTitle3"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="@dimen/_8dp"
+                    android:layout_marginLeft="@dimen/_8dp"
+                    android:layout_marginBottom="@dimen/_8dp"
+                    android:padding="@dimen/_8dp"
+                    android:textStyle="bold"
+                    android:text="A massage is just like a movie, really relaxing and a total escape, except in a massage you’re the star. And you don’t miss anything by falling asleep"
+                    android:textColor="@color/light_leaf_green" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+
+</ScrollView>
+</layout>

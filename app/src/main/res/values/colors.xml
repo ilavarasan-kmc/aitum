@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#096767</color>
+    <color name="colorPrimaryDark">#0D3030</color>
+    <color name="colorAccent">#0E2929</color>
 
     <!--<color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
@@ -14,4 +14,91 @@
     <color name="black">#000</color>
     <color name="green">#588D18</color>
     <color name="red">#E70808</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#f98da5</color>
+    <color name="dot_light_screen2">#8cf9eb</color>
+    <color name="dot_light_screen3">#93c6fd</color>
+    <color name="dot_light_screen4">#e4b5fc</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#d1395c</color>
+    <color name="dot_dark_screen2">#14a895</color>
+    <color name="dot_dark_screen3">#2278d4</color>
+    <color name="dot_dark_screen4">#492066</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen3</item>
+        <item>@color/dot_light_screen4</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen3</item>
+        <item>@color/dot_dark_screen4</item>
+    </array>
+
+    <color name="soft_colorAccent">#f8fab8</color>
+    <color name="grey">#A9A9A9</color>
+    <color name="soft_grey">#C0C0C0</color>
+    <color name="darkgrey">#4B4B4B</color>
+    <color name="light_grey">#f6f6f6</color>
+    <color name="transparent">#00000000</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="logo_bottom_orange">#fd693b</color>
+    <color name="logo_left_orange">#ffdc0e</color>
+    <color name="logo_right_orange">#ffb51e</color>
+    <color name="orange_soft">#ee8572</color>
+    <color name="chocolate_soft">#f8b195</color>
+    <color name="darkorange_soft">#c06c84</color>
+    <color name="blue_soft">#6c5b7b</color>
+    <color name="dark_pink">#4f3961</color>
+    <color name="double_dark_pink">#552244</color>
+    <color name="more_light_blue">#50FFFFFF</color>
+    <color name="dark_blue">#2F7092</color>
+    <color name="light_blue">#F06A90B5</color>
+    <color name="medium_light_blue">#0079D6</color>
+    <color name="soft_blue">#DAE8FC</color>
+    <color name="purple">#a86cc1</color>
+    <color name="light_purple">#a86cc1</color>
+    <color name="soft_purple">#d5a6e6 </color>
+    <color name="dark_purple">#52307c</color>
+    <color name="pink">#ff48a5</color>
+    <color name="light_pink">#ff77bc</color>
+    <color name="soft_pink">#ffaed7</color>
+    <color name="theme_color_1">#fb5252</color>
+    <color name="theme_color_2">#fdd835</color>
+    <color name="dark_yellow">#A8914B</color>
+    <color name="gold">#CFB53B</color>
+    <color name="light_gold">#b8860b</color>
+    <color name="dark_gold">#8b6508</color>
+    <color name="soft_gold">#cd950c</color>
+    <color name="thin_gold_color">#eead0e</color>
+    <color name="milk_white">#f5f5f5</color>
+    <color name="dark_red">#900c3f</color>
+    <color name="light_red">#d63447</color>
+    <color name="light_leaf_green">#863C7515</color>
+    <color name="dark_orange">#f57b51</color>
+
+    <color name="taxi_yello">#feeb00</color>
+
+    <!--gradient colors-->
+    <color name="gradientOrange">#FF416C</color>
+    <color name="gradientViolet">#8A52E9</color>
+    <color name="gradientLightYellow">#FFA72F</color>
+    <color name="gradientLightOrange">#FF641A</color>
+    <color name="gradientLightYellow2">#FFC92B</color>
+    <color name="gradientLightOrange2">#FF7765</color>
+    <color name="gradientOrange3">#F7A23C</color>
+    <color name="gradientLightBlue">#376DF6</color>
+    <color name="gradientLightGreen">#21E8AC</color>
+    <color name="gradientdarkBlue">#2e6fbc</color>
+    <color name="gradientLightblue">#8ec0e3</color>
+
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_700">#616161</color>
+
 </resources>

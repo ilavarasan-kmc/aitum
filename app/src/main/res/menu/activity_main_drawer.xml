@@ -1,22 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_dashboard"
-            android:icon="@drawable/ic_dashboard_black_24dp"
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_icon"
             android:title="Dashboard" />
+
         <item
-            android:id="@+id/nav_calender"
-            android:icon="@drawable/ic_event_black_24dp"
-            android:title="Calender" />
+            android:id="@+id/nav_monitoring"
+            android:icon="@drawable/monitor_icon"
+            android:title="Monitoring" />
         <item
-            android:id="@+id/nav_chat"
-            android:icon="@drawable/ic_sms"
-            android:title="Chat" />
+            android:id="@+id/nav_daily_avtivity"
+            android:icon="@drawable/daily_icon"
+            android:title="Activity" />
+
         <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_phonelink_setup_black_24dp"
+            android:id="@+id/nav_event_calendar"
+            android:icon="@drawable/calendarnew_icon"
+            android:title="Calendar" />
+
+        <item
+            android:id="@+id/nav_medical"
+            android:icon="@drawable/moedical_icon"
+            android:title="Medical" />
+
+        <item
+            android:id="@+id/nav_service"
+            android:icon="@drawable/survey_24dp"
+            android:title="Service" />
+
+        <item
+            android:id="@+id/nav_reports"
+            android:icon="@drawable/survey_24dp"
+            android:title="Reports" />
+
+        <item
+            android:id="@+id/nav_survey"
+            android:icon="@drawable/survey_24dp"
+            android:title="Survey" />
+
+
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/setting_icon"
             android:title="Settings" />
 
     </group>
+
+    <item android:title="Others">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout_icon"
+                android:title="Logout" />
+
+        </menu>
+    </item>
+
 </menu>

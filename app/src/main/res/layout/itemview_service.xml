@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        style="@style/Card">
+
+    <LinearLayout
+        style="@style/LinearLayout.Horizontal"
+        android:layout_weight="2">
+
+    <TextView
+        android:text="hlooooooo"
+        android:layout_weight="1"
+        android:id="@+id/txt_name"
+        style="@style/Text.primary"/>
+
+    <TextView
+        android:text="hlo how r u"
+        android:layout_weight="1"
+        android:id="@+id/text_desc"
+        style="@style/Text.primary"/>
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

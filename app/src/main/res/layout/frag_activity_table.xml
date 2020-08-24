@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,11 +12,13 @@
             <LinearLayout style="@style/LinearLayout.Vertical">
 
                 <LinearLayout
+                    android:layout_margin="0dp"
                     android:id="@+id/view_product_list"
                     style="@style/LinearLayout.Vertical"
                     android:visibility="visible">
 
                     <LinearLayout
+                        android:layout_margin="0dp"
                         style="@style/LinearLayout.Horizontal"
                         android:layout_marginTop="@dimen/dimen_10sdp"
                         android:background="@drawable/bg_border">
@@ -37,7 +41,7 @@
                             style="@style/Text.primary"
                             android:layout_gravity="center_vertical"
                             android:layout_margin="@dimen/dimen_5sdp"
-                            android:layout_weight="6"
+                            android:layout_weight="5"
                             android:gravity="center_horizontal"
                             android:text="Description"
                             android:textStyle="bold" />
@@ -83,3 +87,5 @@
     </LinearLayout>
 
 </LinearLayout>
+
+</layout>
