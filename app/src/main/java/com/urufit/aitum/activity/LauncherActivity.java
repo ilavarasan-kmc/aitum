@@ -27,20 +27,6 @@ public class LauncherActivity extends AppCompatActivity {
         Calligrapher calligrapher=new Calligrapher(this);
         calligrapher.setFont(this,"Lato-Regular.ttf",true);
 
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Boolean name=SharedPreferenc.getBoolean(getApplicationContext(),"LOGIN_KEY");
-                LauncherActivity.this.startActivity(new Intent(LauncherActivity.this,
-
-                        SharedPreferenc.getBoolean(LauncherActivity.this, LOGIN_KEY)
-                                ? MainActivity.class
-                                : LoginActivity.class)
-                );
-                LauncherActivity.this.finish();
-            }
-        }, 1000);*/
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
