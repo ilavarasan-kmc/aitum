@@ -24,9 +24,6 @@ import me.anwarshahriar.calligrapher.Calligrapher;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String LOGIN_KEY = "LOGIN_KEY";
-    String name, email, mRole;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showSignIn() {
         try {
-          //  AWSMobileClient.getInstance().showSignIn(this, SignInUIOptions.builder().nextActivity(EmptyActivity.class).build());
             AWSMobileClient.getInstance().showSignIn(this, SignInUIOptions.builder().nextActivity(EmptyActivity.class).build());
         } catch (Exception e) {
         }
