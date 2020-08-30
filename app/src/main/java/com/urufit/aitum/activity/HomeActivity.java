@@ -1,5 +1,34 @@
 package com.urufit.aitum.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,36 +37,28 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.google.android.material.navigation.NavigationView;
 import com.urufit.aitum.R;
 import com.urufit.aitum.fragment.ManagerCalenderFragment;
 import com.urufit.aitum.fragment.SettingsActivity;
+import com.urufit.aitum.ui.SingletonSession;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class HomeActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener  {
+import static com.urufit.aitum.ui.ImagePickerActivity.fileName;
+
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     public Toolbar toolbar;
@@ -45,15 +66,20 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
     public NavigationView navigationView;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public AlertDialog.Builder builder;
-    CardView card_monitoring,card_activity,card_medical,card_profile;
+    CardView card_monitoring, card_activity, card_medical, card_profile;
     private View navHeader;
-    TextView txt_name=null,nav_drver_id,txt_scope;
+    TextView txt_name = null, txt_user_name, txt_scope;
+    ImageView nav_logo;
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
     String Role;
     ArrayList<String> numbersList = new ArrayList<>();
     ArrayList<String> scopeList = new ArrayList<>();
-    public  String MY_PREFS_NAME="User_Profile";
+    public String MY_PREFS_NAME = "User_Profile";
+    private Uri fileUri;
+    private Bitmap bitmap;
+    //track Choosing Image Intent
+    private static final int CHOOSING_IMAGE_REQUEST = 1234;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,38 +88,37 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
         BindMethod();
     }
 
-    private void BindMethod()
-    {
+    private void BindMethod() {
         toolbar = findViewById(R.id.tool);
         toolbar.setTitle("ATIUM");
         setSupportActionBar(toolbar);
-        txt_name=findViewById(R.id.txt_name);
-        card_monitoring=findViewById(R.id.card_monitoring);
-        card_activity=findViewById(R.id.card_activity);
-        card_medical=findViewById(R.id.card_medical);
-        card_profile=findViewById(R.id.card_player_prof);
-        TextView dayTime=findViewById(R.id.day_time);
+        txt_name = findViewById(R.id.txt_name);
+        card_monitoring = findViewById(R.id.card_monitoring);
+        card_activity = findViewById(R.id.card_activity);
+        card_medical = findViewById(R.id.card_medical);
+        card_profile = findViewById(R.id.card_player_prof);
+        TextView dayTime = findViewById(R.id.day_time);
 
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
-        if(timeOfDay >= 0 && timeOfDay < 12){
+        if (timeOfDay >= 0 && timeOfDay < 12) {
             dayTime.setText("Good Morning");
             //Toast.makeText(this, "Good Morning", Toast.LENGTH_SHORT).show();
-        }else if(timeOfDay >= 12 && timeOfDay < 16){
+        } else if (timeOfDay >= 12 && timeOfDay < 16) {
             dayTime.setText("Good Afternoon");
-      //      Toast.makeText(this, "Good Afternoon", Toast.LENGTH_SHORT).show();
-        }else if(timeOfDay >= 16 && timeOfDay < 21){
+            //      Toast.makeText(this, "Good Afternoon", Toast.LENGTH_SHORT).show();
+        } else if (timeOfDay >= 16 && timeOfDay < 21) {
             dayTime.setText("Good Evening");
-          //  Toast.makeText(this, "Good Evening", Toast.LENGTH_SHORT).show();
-        }else if(timeOfDay >= 21 && timeOfDay < 24){
+            //  Toast.makeText(this, "Good Evening", Toast.LENGTH_SHORT).show();
+        } else if (timeOfDay >= 21 && timeOfDay < 24) {
             dayTime.setText("Good Night");
-         //   Toast.makeText(this, "Good Night", Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(this, "Good Night", Toast.LENGTH_SHORT).show();
         }
         card_monitoring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Monitoring.class);
+                Intent intent = new Intent(getApplicationContext(), Monitoring.class);
                 startActivity(intent);
             }
         });
@@ -101,7 +126,7 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
         card_activity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Performance_Assessment.class);
+                Intent intent = new Intent(getApplicationContext(), Performance_Assessment.class);
                 startActivity(intent);
             }
         });
@@ -109,7 +134,7 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
         card_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), PlayerHomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), PlayerHomeActivity.class);
                 startActivity(intent);
             }
         });
@@ -117,14 +142,14 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
         card_medical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Clinical_assement_follow_up.class);
+                Intent intent = new Intent(getApplicationContext(), Clinical_assement_follow_up.class);
                 startActivity(intent);
             }
         });
 
         builder = new AlertDialog.Builder(this, R.style.CustomDialogTheme);
         drawerLayout = findViewById(R.id.drawer_layout);
-      //  navigationView = findViewById(R.id.navigationView);
+        //  navigationView = findViewById(R.id.navigationView);
         actionBarDrawerToggle = new ActionBarDrawerToggle(HomeActivity.this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
@@ -132,8 +157,114 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
         actionBarDrawerToggle.syncState();
 
         hidemenu();
+        downloadImage();
 
     }
+
+    private void downloadImage() {
+       /* TransferUtility transferUtility =
+                TransferUtility.builder()
+                        .context(getApplicationContext())
+                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance(), Region.getRegion(Regions.AP_SOUTH_1)))
+                        .build();
+
+        fileName=SingletonSession.Instance().getUserId()+".jpg";
+
+        File file=new File(fileName);
+
+        TransferObserver downloadObserver =
+           //     transferUtility.download("profile_photos/"+SingletonSession.Instance().getUserId(),fileName);
+                transferUtility.download( "com.urufit.datacollection", "profile_photos/" ,file);
+
+        downloadObserver.setTransferListener(new TransferListener() {
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (TransferState.COMPLETED == state) {
+
+                    Log.d("Succss", String.valueOf(state));
+                    // Handle a completed upload.
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                float percentDonef = ((float)bytesCurrent/(float)bytesTotal) * 100;
+                int percentDone = (int)percentDonef;
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                // Handle errors
+                Log.d("Error", String.valueOf(ex));
+            }
+
+        });*/
+
+
+       // if (fileUri != null) {
+
+            final String fileName = SingletonSession.Instance().getUserId()+".jpg";
+        final File file = new File(Environment.getExternalStorageDirectory(), "read.me");
+        Uri uri = Uri.fromFile(file);
+        File auxFile = new File(uri.toString());
+
+            try {
+           //     final File localFile = File.createTempFile("images", getFileExtension(fileUri));
+
+                TransferUtility transferUtility =
+                        TransferUtility.builder()
+                                .context(getApplicationContext())
+                                .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                                .s3Client(new AmazonS3Client(AWSMobileClient.getInstance(), Region.getRegion(Regions.AP_SOUTH_1)))
+                                .build();
+
+                TransferObserver downloadObserver =
+                        transferUtility.download("profile_photos/" + fileName , auxFile);
+
+                downloadObserver.setTransferListener(new TransferListener() {
+
+                    @Override
+                    public void onStateChanged(int id, TransferState state) {
+                        if (TransferState.COMPLETED == state) {
+                            Toast.makeText(getApplicationContext(), "Download Completed!", Toast.LENGTH_SHORT).show();
+
+                         //   tvFileName.setText(fileName + "." + getFileExtension(fileUri));
+                            Bitmap bmp = BitmapFactory.decodeFile(auxFile.getAbsolutePath());
+                      //      nav_logo.setImageBitmap(bmp);
+                        }
+                    }
+
+                    @Override
+                    public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                        float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
+                        int percentDone = (int) percentDonef;
+
+                   //     tvFileName.setText("ID:" + id + "|bytesCurrent: " + bytesCurrent + "|bytesTotal: " + bytesTotal + "|" + percentDone + "%");
+                    }
+
+                    @Override
+                    public void onError(int id, Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                });
+            } catch (Exception e ){
+
+            }
+      /*  else {
+            Toast.makeText(this, "Upload file before downloading", Toast.LENGTH_LONG).show();
+        }*/
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+
+        return mime.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -150,34 +281,34 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 LayoutInflater inflater = getLayoutInflater();
                 View dialogLayout = inflater.inflate(R.layout.alert_dialog, null);
-               ListView listView = dialogLayout.findViewById(R.id.list_View);
-               if(numbersList!=null) {
-                   numbersList = (ArrayList<String>) getIntent().getSerializableExtra("arraylist");
-                   MyListAdapter adapter = new MyListAdapter(this, numbersList);
-                   listView.setAdapter(adapter);
-                   adapter.notifyDataSetChanged();
-                   builder.setView(dialogLayout);
-                   builder.show();
-                   listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                       @Override
-                       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                           String RoleName = String.valueOf(listView.getItemAtPosition(position));
-                           if ("athlete".equalsIgnoreCase(RoleName)) {
-                               Intent intent = new Intent(getApplicationContext(), Athlete_Home_Activity.class);
-                               intent.putExtra("arraylist", numbersList);
-                               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                               startActivity(intent);
-                               finish();
-                           } else {
-                               Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                               intent.putExtra("arraylist", numbersList);
-                               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                               startActivity(intent);
-                               finish();
-                           }
-                       }
-                   });
-               }
+                ListView listView = dialogLayout.findViewById(R.id.list_View);
+                if (numbersList != null) {
+                    numbersList = (ArrayList<String>) getIntent().getSerializableExtra("arraylist");
+                    MyListAdapter adapter = new MyListAdapter(this, numbersList);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    builder.setView(dialogLayout);
+                    builder.show();
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String RoleName = String.valueOf(listView.getItemAtPosition(position));
+                            if ("athlete".equalsIgnoreCase(RoleName)) {
+                                Intent intent = new Intent(getApplicationContext(), Athlete_Home_Activity.class);
+                                intent.putExtra("arraylist", numbersList);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                intent.putExtra("arraylist", numbersList);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+                }
                 break;
             case R.id.menu_scope_user:
                 AlertDialog.Builder builderScope = new AlertDialog.Builder(HomeActivity.this);
@@ -185,28 +316,24 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
                 View view = inflaterScope.inflate(R.layout.alert_dialog_scope, null);
                 ListView listViewScope = view.findViewById(R.id.list_View);
                 scopeList = (ArrayList<String>) getIntent().getSerializableExtra("scopelist");
-                MyListScopeAdapter adapterScope=new MyListScopeAdapter(this, scopeList);
+                MyListScopeAdapter adapterScope = new MyListScopeAdapter(this, scopeList);
                 listViewScope.setAdapter(adapterScope);
                 adapterScope.notifyDataSetChanged();
                 builderScope.setView(view);
                 listViewScope.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String ScopeName= String.valueOf(listViewScope.getItemAtPosition(position));
-                       txt_scope.setText(ScopeName);
+                        String ScopeName = String.valueOf(listViewScope.getItemAtPosition(position));
+                        txt_scope.setText(ScopeName);
                     }
                 });
-                builderScope.setNeutralButton("Cancel", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                builderScope.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
-                builderScope.setNegativeButton("OK", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                builderScope.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
@@ -220,6 +347,26 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (bitmap != null) {
+            bitmap.recycle();
+        }
+
+        if (requestCode == CHOOSING_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            fileUri = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static class MyListScopeAdapter extends ArrayAdapter<String> {
 
         private final Activity context;
@@ -229,22 +376,24 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
             super(context, R.layout.item_view_user_list, maintitle);
             // TODO Auto-generated constructor stub
 
-            this.context=context;
-            this.maintitle=maintitle;
+            this.context = context;
+            this.maintitle = maintitle;
 
         }
 
         public View getView(int position, View view, ViewGroup parent) {
-            LayoutInflater inflater=context.getLayoutInflater();
-            View rowView=inflater.inflate(R.layout.item_view_user_list, null,true);
+            LayoutInflater inflater = context.getLayoutInflater();
+            View rowView = inflater.inflate(R.layout.item_view_user_list, null, true);
             TextView titleText = (TextView) rowView.findViewById(R.id.title);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-            String value=maintitle.get(position);
+            String value = maintitle.get(position);
             titleText.setText(value);
 
             return rowView;
 
-        };
+        }
+
+        ;
     }
 
     public class MyListAdapter extends ArrayAdapter<String> {
@@ -256,40 +405,44 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
             super(context, R.layout.item_view_user_list, maintitle);
             // TODO Auto-generated constructor stub
 
-            this.context=context;
-            this.maintitle=maintitle;
+            this.context = context;
+            this.maintitle = maintitle;
 
         }
 
         public View getView(int position, View view, ViewGroup parent) {
-            LayoutInflater inflater=context.getLayoutInflater();
-            View rowView=inflater.inflate(R.layout.item_view_user_list, null,true);
+            LayoutInflater inflater = context.getLayoutInflater();
+            View rowView = inflater.inflate(R.layout.item_view_user_list, null, true);
             TextView titleText = (TextView) rowView.findViewById(R.id.title);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-            String value=maintitle.get(position);
+            String value = maintitle.get(position);
             titleText.setText(value);
 
             return rowView;
 
-        };
+        }
+
+        ;
     }
 
     private void hidemenu() {
         navigationView = findViewById(R.id.navigationView);
         navHeader = navigationView.getHeaderView(0);
-        nav_drver_id = (TextView) navHeader.findViewById(R.id.nau_username_txt);
+        txt_user_name = (TextView) navHeader.findViewById(R.id.txt_user_name);
         txt_scope = (TextView) navHeader.findViewById(R.id.txt_scope);
+        nav_logo = (ImageView) navHeader.findViewById(R.id.nav_logo);
         navigationView.setNavigationItemSelectedListener(this);
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String LocalName=pref.getString("Name",null);
-        String Scope=pref.getString("Scope",null);
-        nav_drver_id.setText(LocalName);
+        String LocalName = pref.getString("Name", null);
+        String name = SingletonSession.Instance().getScope();
+        String Scope = name.substring(0, 1).toUpperCase() + name.substring(1);
+        txt_user_name.setText(LocalName);
         txt_name.setText(LocalName);
         txt_scope.setText(Scope);
 
         Menu nav_Menu = navigationView.getMenu();
-        if("user".equalsIgnoreCase(Role)){
+        if ("user".equalsIgnoreCase(Role)) {
             nav_Menu.findItem(R.id.nav_home).setVisible(true);
             nav_Menu.findItem(R.id.nav_event_calendar).setVisible(true);
             nav_Menu.findItem(R.id.nav_daily_avtivity).setVisible(true);
@@ -299,7 +452,8 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
             nav_Menu.findItem(R.id.nav_reports).setVisible(false);
             nav_Menu.findItem(R.id.nav_service).setVisible(false);
             nav_Menu.findItem(R.id.nav_reports).setVisible(false);
-        }if("athlete".equalsIgnoreCase(Role)){
+        }
+        if ("athlete".equalsIgnoreCase(Role)) {
             nav_Menu.findItem(R.id.nav_home).setVisible(true);
             nav_Menu.findItem(R.id.nav_event_calendar).setVisible(true);
             nav_Menu.findItem(R.id.nav_daily_avtivity).setVisible(true);
@@ -345,40 +499,35 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
         if (id == R.id.nav_home) {
-            Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+            Intent intent = new Intent(HomeActivity.this, DummyTest.class);
             startActivity(intent);
         } else if (id == R.id.nav_monitoring) {
             Intent homepage = new Intent(HomeActivity.this, Monitoring.class);
             startActivity(homepage);
-        }else if (id == R.id.nav_daily_avtivity) {
+        } else if (id == R.id.nav_daily_avtivity) {
             Intent homepage = new Intent(HomeActivity.this, Performance_Assessment.class);
             startActivity(homepage);
         } else if (id == R.id.nav_event_calendar) {
             Intent homepage = new Intent(HomeActivity.this, ManagerCalenderFragment.class);
             startActivity(homepage);
-        }
-        else if (id == R.id.nav_medical) {
+        } else if (id == R.id.nav_medical) {
             Intent homepage = new Intent(HomeActivity.this, Clinical_assement_follow_up.class);
             startActivity(homepage);
-        }else if (id == R.id.nav_service) {
+        } else if (id == R.id.nav_service) {
             Intent homepage = new Intent(HomeActivity.this, ServiceActivity.class);
             startActivity(homepage);
-        }
-        else if (id == R.id.nav_reports) {
+        } else if (id == R.id.nav_reports) {
             Intent homepage = new Intent(HomeActivity.this, ReportsActivity.class);
             startActivity(homepage);
-        }
-        else if (id == R.id.nav_survey) {
+        } else if (id == R.id.nav_survey) {
             Intent homepage = new Intent(HomeActivity.this, sur_test.class);
             startActivity(homepage);
-        }
-        else if (id == R.id.nav_setting){
+        } else if (id == R.id.nav_setting) {
             Intent homepage = new Intent(HomeActivity.this, SettingsActivity.class);
             startActivity(homepage);
-        }else if (id == R.id.nav_logout) {
-            builder.setIcon(R.drawable.ic_launcher_background);
-            builder.setTitle("Exit");
-            builder.setMessage("Are you sure?.")
+        } else if (id == R.id.nav_logout) {
+            builder.setTitle("ATIUM");
+            builder.setMessage("Are you sure to logout ?.")
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -387,7 +536,7 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
                             editor.clear();
                             editor.apply();
                             dialog.cancel();
-                           logout();
+                            logout();
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -398,6 +547,13 @@ public class HomeActivity extends AppCompatActivity implements  NavigationView.O
                     });
             //Creating dialog box
             AlertDialog alert = builder.create();
+            alert.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GREEN);
+                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+                }
+            });
             alert.show();
         }
 
