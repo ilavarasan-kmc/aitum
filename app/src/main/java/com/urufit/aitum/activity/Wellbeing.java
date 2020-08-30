@@ -58,28 +58,6 @@ public class Wellbeing extends AppCompatActivity {
         toolbar.setTitle("Wellbeing Report");
         setSupportActionBar(toolbar);
 
-        // Spinner Drop down elements
-   //         List<String> categories = new ArrayList<String>();
-  //      categories.add("Wellness questionnaire");
-
-        // Creating adapter for spinner
-  //      ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
-
-        // Drop down layout style - list view with radio button
-    //    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-   //     spinner.setAdapter(dataAdapter);
-
-       /* btn_schedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i_survey = new Intent(Wellbeing.this, SurveyActivity.class);
-                i_survey.putExtra("json_survey", loadSurveyJson("example_survey_4.json"));
-                startActivityForResult(i_survey, SURVEY_REQUEST);
-            }
-        });*/
-
         AWSMobileClient.getInstance().getTokens(new com.amazonaws.mobile.client.Callback<Tokens>() {
             @Override
             public void onResult(Tokens result) {
