@@ -25,7 +25,7 @@ public class ReportsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reports);
-    //    Button btn_choose=findViewById(R.id.btn_choose_file);
+
         btnChooseFile =findViewById(R.id.btn_choose_file);
         btn_Report =findViewById(R.id.btn_send_report);
         tvItemPath =findViewById(R.id.tv_file_path);
@@ -50,6 +50,7 @@ public class ReportsActivity extends AppCompatActivity {
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PICKFILE_RESULT_CODE:
                 if (resultCode == -1) {
@@ -57,7 +58,6 @@ public class ReportsActivity extends AppCompatActivity {
                     filePath = fileUri.getPath();
                     tvItemPath.setText(filePath);
                 }
-
                 break;
         }
     }
