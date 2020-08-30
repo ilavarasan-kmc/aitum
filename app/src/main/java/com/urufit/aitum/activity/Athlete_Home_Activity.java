@@ -47,18 +47,28 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.google.android.material.navigation.NavigationView;
 import com.urufit.aitum.R;
-import com.urufit.aitum.adapter.ScheduleAdapter;
 import com.urufit.aitum.adapter.TodoAdapter;
 import com.urufit.aitum.fragment.ManagerCalenderFragment;
 import com.urufit.aitum.fragment.SettingsActivity;
-import com.urufit.aitum.model.ScheduleModel;
 import com.urufit.aitum.model.TodoModel;
 import com.urufit.aitum.ui.RadarMarkerView;
+import com.urufit.aitum.ui.SingletonSession;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class Athlete_Home_Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -69,14 +79,17 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
     public AlertDialog.Builder builder;
     CardView card_monitoring, card_activity, card_medical;
     private View navHeader;
-    TextView txt_name = null, nav_drver_id,txt_scope;
+    TextView txt_name , txt_user_name, txt_scope;
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
-    String Token,Role;
+    String Token, Role;
     private static final int SURVEY_REQUEST = 1337;
     ArrayList<String> numbersList = new ArrayList<>();
     ArrayList<String> scopeList = new ArrayList<>();
     private RadarChart chart;
+    TodoAdapter adapter;
+    RecyclerView recyclerView;
+    List<TodoModel> myListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +103,8 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         toolbar.setTitle("ATIUM");
         setSupportActionBar(toolbar);
         chart = findViewById(R.id.radarchart);
-     //   CardView cardtodo=(CardView)findViewById(R.i/d.card_todo) ;
- //       CardView card_survey=(CardView)findViewById(R.id.card_survey) ;
+        //   CardView cardtodo=(CardView)findViewById(R.i/d.card_todo) ;
+        //       CardView card_survey=(CardView)findViewById(R.id.card_survey) ;
         builder = new AlertDialog.Builder(this, R.style.CustomDialogTheme);
         drawerLayout = findViewById(R.id.drawer_layout);
         //  navigationView = findViewById(R.id.navigationView);
@@ -101,58 +114,9 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-     /*   cardtodo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),TodoActivity.class);
-                startActivity(intent);
-            }
-        });
-        card_survey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i_survey = new Intent(Athlete_Home_Activity.this, Welness_test.class);
-                String Email = getIntent().getStringExtra("Email");
-                i_survey.putExtra("Email",Email);
-                startActivity(i_survey);
-            }
-        });*/
-
-        /*card_survey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i_survey = new Intent(Athlete_Home_Activity.this, SurveyActivity.class);
-                i_survey.putExtra("json_survey", loadSurveyJson("example_survey_4.json"));
-                startActivityForResult(i_survey, SURVEY_REQUEST);
-            }
-        });*/
-
-        TodoModel[] myListData = new TodoModel[] {
-                new TodoModel("Daily Update Questinnaire"),
-                new TodoModel("Take Test"),
-                new TodoModel("Medical Checkup")
-        };
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        TodoAdapter adapter = new TodoAdapter(Arrays.asList(myListData),getApplicationContext());
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-        /*ScheduleModel[] myListData = new ScheduleModel[] {
-                new ScheduleModel("WellBeing","1"),
-                new ScheduleModel("Load Quantification","2"),
-                new ScheduleModel("Kinanthropometry","3"),
-                new ScheduleModel("Technical Assessment","4"),
-                new ScheduleModel("Rehab Knee","5"),
-                new ScheduleModel("Hamstring","6"),
-        };
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        ScheduleAdapter adapter = new ScheduleAdapter(Arrays.asList(myListData));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);*/
 
         hidemenu();
 
@@ -161,13 +125,14 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
             public void onResult(Tokens result) {
                 Token = result.getIdToken().getTokenString();
                 Log.d("Token=", Token);
+                fetchEvents();
             }
+
             @Override
             public void onError(Exception e) {
 
             }
         });
-
 
         // Radar chart
 
@@ -192,14 +157,14 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         chart.animateXY(1400, 1400, Easing.EaseInOutQuad);
 
         XAxis xAxis = chart.getXAxis();
-     //   xAxis.setTypeface(tfLight);
+        //   xAxis.setTypeface(tfLight);
         xAxis.setTextSize(10f);
         xAxis.setYOffset(0f);
         xAxis.setXOffset(0f);
         xAxis.setValueFormatter(new ValueFormatter() {
 
-        //    private final String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
-        private final String[] mActivities = new String[]{"Power", "Sprint", "COD", "Strength"};
+            //    private final String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
+            private final String[] mActivities = new String[]{"Power", "Sprint", "COD", "Strength"};
 
             @Override
             public String getFormattedValue(float value) {
@@ -209,7 +174,7 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         xAxis.setTextColor(Color.WHITE);
 
         YAxis yAxis = chart.getYAxis();
-      //  yAxis.setTypeface(tfLight);
+        //  yAxis.setTypeface(tfLight);
         yAxis.setLabelCount(5, false);
         yAxis.setTextSize(10f);
         yAxis.setAxisMinimum(0f);
@@ -221,12 +186,75 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-   //     l.setTypeface(tfLight);
+        //     l.setTypeface(tfLight);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
         l.setTextColor(Color.WHITE);
 
     }
+
+    private void fetchEvents() {
+
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api-dev.atium.in/v1/clients/"+ SingletonSession.Instance().getScope() +"/events").newBuilder();
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder()
+                .header("Authorization", "Bearer " + Token)
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+
+                Log.w("Sucess Response", response.toString());
+                String mMessage = response.body().string();
+                Log.d("Response", mMessage);
+
+                if ("null".equalsIgnoreCase(mMessage)) {
+                    Athlete_Home_Activity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Athlete_Home_Activity.this, mMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    try {
+                        JSONArray jsonArray = new JSONArray(mMessage);
+                        myListData = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            TodoModel todoModel = new TodoModel(jsonObject.getString("title"));
+                            myListData.add(todoModel);
+                            adapter = new TodoAdapter(myListData, getApplicationContext());
+                            Athlete_Home_Activity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    recyclerView.setAdapter(adapter);
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Athlete_Home_Activity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     private void setData() {
 
         float mul = 80;
@@ -269,7 +297,7 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         sets.add(set2);
 
         RadarData data = new RadarData(sets);
-       // data.setValueTypeface(tfLight);
+        // data.setValueTypeface(tfLight);
         data.setValueTextSize(8f);
         data.setDrawValues(false);
         data.setValueTextColor(Color.WHITE);
@@ -282,11 +310,12 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_athlete_menus, menu);
-        MenuItem item = menu.findItem(R.id.menu_change_user); Intent intent = getIntent();
+        MenuItem item = menu.findItem(R.id.menu_change_user);
+        Intent intent = getIntent();
         String result = intent.getStringExtra("Role");
-        if("athlete".equalsIgnoreCase(result)){
+        if ("athlete".equalsIgnoreCase(result)) {
             item.setVisible(false);
-        }else {
+        } else {
             item.setVisible(true);
         }
         return true;
@@ -303,7 +332,7 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
                 View dialogLayout = inflater.inflate(R.layout.alert_dialog, null);
                 ListView listView = dialogLayout.findViewById(R.id.list_View);
                 numbersList = (ArrayList<String>) getIntent().getSerializableExtra("arraylist");
-                MyListAdapter adapter=new MyListAdapter(this, numbersList);
+                MyListAdapter adapter = new MyListAdapter(this, numbersList);
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 builder.setView(dialogLayout);
@@ -311,14 +340,14 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String RoleName= String.valueOf(listView.getItemAtPosition(position));
-                        if("athlete".equalsIgnoreCase(RoleName)){
-                            Intent intent=new Intent(getApplicationContext(), Athlete_Home_Activity.class);
+                        String RoleName = String.valueOf(listView.getItemAtPosition(position));
+                        if ("athlete".equalsIgnoreCase(RoleName)) {
+                            Intent intent = new Intent(getApplicationContext(), Athlete_Home_Activity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             finish();
-                        }else{
-                            Intent intent=new Intent(getApplicationContext(), HomeActivity.class);
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             intent.putExtra("arraylist", numbersList);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -334,28 +363,24 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
                 View view = inflaterScope.inflate(R.layout.alert_dialog_scope, null);
                 ListView listViewScope = view.findViewById(R.id.list_View);
                 scopeList = (ArrayList<String>) getIntent().getSerializableExtra("scopelist");
-                MyListScopeAdapter adapterScope=new MyListScopeAdapter(this, scopeList);
+                MyListScopeAdapter adapterScope = new MyListScopeAdapter(this, scopeList);
                 listViewScope.setAdapter(adapterScope);
                 adapterScope.notifyDataSetChanged();
                 builderScope.setView(view);
                 listViewScope.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String ScopeName= String.valueOf(listViewScope.getItemAtPosition(position));
+                        String ScopeName = String.valueOf(listViewScope.getItemAtPosition(position));
                         txt_scope.setText(ScopeName);
                     }
                 });
-                builderScope.setNeutralButton("Cancel", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                builderScope.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
-                builderScope.setNegativeButton("OK", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                builderScope.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
@@ -368,6 +393,7 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         }
         return super.onOptionsItemSelected(item);
     }
+
     public class MyListAdapter extends ArrayAdapter<String> {
 
         private final Activity context;
@@ -377,22 +403,24 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
             super(context, R.layout.item_view_user_list, maintitle);
             // TODO Auto-generated constructor stub
 
-            this.context=context;
-            this.maintitle=maintitle;
+            this.context = context;
+            this.maintitle = maintitle;
 
         }
 
         public View getView(int position, View view, ViewGroup parent) {
-            LayoutInflater inflater=context.getLayoutInflater();
-            View rowView=inflater.inflate(R.layout.item_view_user_list, null,true);
+            LayoutInflater inflater = context.getLayoutInflater();
+            View rowView = inflater.inflate(R.layout.item_view_user_list, null, true);
             TextView titleText = (TextView) rowView.findViewById(R.id.title);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-            String value=maintitle.get(position);
+            String value = maintitle.get(position);
             titleText.setText(value);
 
             return rowView;
 
-        };
+        }
+
+        ;
     }
 
     public static class MyListScopeAdapter extends ArrayAdapter<String> {
@@ -404,24 +432,25 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
             super(context, R.layout.item_view_user_list, maintitle);
             // TODO Auto-generated constructor stub
 
-            this.context=context;
-            this.maintitle=maintitle;
+            this.context = context;
+            this.maintitle = maintitle;
 
         }
 
         public View getView(int position, View view, ViewGroup parent) {
-            LayoutInflater inflater=context.getLayoutInflater();
-            View rowView=inflater.inflate(R.layout.item_view_user_list, null,true);
+            LayoutInflater inflater = context.getLayoutInflater();
+            View rowView = inflater.inflate(R.layout.item_view_user_list, null, true);
             TextView titleText = (TextView) rowView.findViewById(R.id.title);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-            String value=maintitle.get(position);
+            String value = maintitle.get(position);
             titleText.setText(value);
 
             return rowView;
 
-        };
-    }
+        }
 
+        ;
+    }
 
 
     @Override
@@ -459,19 +488,19 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
     private void hidemenu() {
         navigationView = findViewById(R.id.navigationView);
         navHeader = navigationView.getHeaderView(0);
-        nav_drver_id = (TextView) navHeader.findViewById(R.id.nau_username_txt);
+        txt_user_name = (TextView) navHeader.findViewById(R.id.txt_user_name);
         txt_scope = (TextView) navHeader.findViewById(R.id.txt_scope);
         navigationView.setNavigationItemSelectedListener(this);
 
-        String name =getIntent().getStringExtra("Name");
-        Role =getIntent().getStringExtra("Role");
+        String name = getIntent().getStringExtra("Name");
+        Role = getIntent().getStringExtra("Role");
         SharedPreferences pref = getApplicationContext().getSharedPreferences("NavItems", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("user_name", name);
         editor.apply();
-        SharedPreferences preferences = getSharedPreferences("NavItems", MODE_PRIVATE);
-        String LocalName=preferences.getString("user_name",null);
-        nav_drver_id.setText(LocalName);
+
+        txt_user_name.setText(SingletonSession.Instance().getUsername());
+        txt_scope.setText(SingletonSession.Instance().getScope());
     }
 
     @Override
@@ -512,13 +541,15 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         } else if (id == R.id.navigation_calender) {
             Intent homepage = new Intent(Athlete_Home_Activity.this, ManagerCalenderFragment.class);
             startActivity(homepage);
+        } else if (id == R.id.navigation_schedule) {
+            Intent homepage = new Intent(Athlete_Home_Activity.this, ScheduleActivity.class);
+            startActivity(homepage);
         } else if (id == R.id.nav_athlete_setting) {
             Intent homepage = new Intent(Athlete_Home_Activity.this, SettingsActivity.class);
             startActivity(homepage);
         } else if (id == R.id.nav_logout) {
-            builder.setIcon(R.drawable.ic_launcher_background);
             builder.setTitle("ATIUM");
-            builder.setMessage("Are you sure to log out?.")
+            builder.setMessage("Are you sure to logout ?.")
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -533,12 +564,20 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
                     });
             //Creating dialog box
             AlertDialog alert = builder.create();
+            alert.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GREEN);
+                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+                }
+            });
             alert.show();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private void logout() {
         AWSMobileClient.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
