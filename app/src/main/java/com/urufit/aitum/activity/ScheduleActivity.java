@@ -6,37 +6,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.results.Tokens;
 import com.urufit.aitum.R;
 import com.urufit.aitum.adapter.ScheduleAdapter;
-import com.urufit.aitum.adapter.TeamprofileAdapter;
-import com.urufit.aitum.adapter.TodoAdapter;
-import com.urufit.aitum.model.ScheduleModel;
-import com.urufit.aitum.model.TeamProfileModel;
-import com.urufit.aitum.model.TodoModel;
-import com.urufit.aitum.ui.SimpleDividerItemDecoration;
 import com.urufit.aitum.ui.SingletonSession;
-import com.urufit.aitum.ui.Toolbar_customs;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -44,22 +28,18 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
-
 public class ScheduleActivity extends AppCompatActivity {
 
     public Toolbar toolbar;
     RecyclerView recyclerView;
     String Token;
     ScheduleAdapter adapter;
-
     ArrayList<String>teamNameList=new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-        //AddSchedule=findViewById(R.id.btn_add_schedule);
         toolbar = findViewById(R.id.toolbar_customs);
         toolbar.setTitle("Schedule");
         setSupportActionBar(toolbar);
@@ -71,16 +51,6 @@ public class ScheduleActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
-     /*   ScheduleModel[] myListData = new ScheduleModel[] {
-                new ScheduleModel("WellBeing","1"),
-                new ScheduleModel("Load Quantification","2"),
-                new ScheduleModel("Kinanthropometry","3"),
-                new ScheduleModel("Technical Assessment","4"),
-                new ScheduleModel("Rehab Knee","5"),
-                new ScheduleModel("Hamstring","6"),
-        };*/
-
          recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -115,7 +85,6 @@ public class ScheduleActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
             }
 
             @Override
@@ -133,7 +102,6 @@ public class ScheduleActivity extends AppCompatActivity {
                             for (int k = 0; k < jsonactivities.length(); k++) {
                                 JSONObject jsonActivitiesObject = jsonactivities.getJSONObject(k);
                                 String TestName=jsonActivitiesObject.getString("name");
-                                Log.d("TestName----",TestName);
                                 teamNameList.add(TestName);
                             }
                         }
@@ -173,7 +141,6 @@ public class ScheduleActivity extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(mMessage);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                   //     teamNameList.add(jsonObject.getString("name"));
                         String TeamName=jsonObject.getString("name");
                         getTeamSchedule(TeamName);
                         }
@@ -185,6 +152,7 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private void getTeamSchedule(String teamName) {
+
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/clients/" + SingletonSession.Instance().getScope() + "/teams/"+teamName+"/schedules").newBuilder();
         String url = urlBuilder.build().toString();
@@ -217,7 +185,6 @@ public class ScheduleActivity extends AppCompatActivity {
                             for (int k = 0; k < jsonactivities.length(); k++) {
                                 JSONObject jsonActivitiesObject = jsonactivities.getJSONObject(k);
                                 String TestName=jsonActivitiesObject.getString("name");
-                                Log.d("TestName----",TestName);
                                 teamNameList.add(TestName);
                             }
                         }
