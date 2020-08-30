@@ -18,9 +18,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.results.Tokens;
 import com.google.android.material.slider.RangeSlider;
-import com.trafi.ratingseekbar.RatingSeekBar;
 import com.urufit.aitum.R;
 import com.urufit.aitum.model.Question;
+import com.urufit.aitum.ui.SingletonSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,23 +43,20 @@ import okhttp3.Response;
 public class Welness_test extends AppCompatActivity {
 
     TextView ratingLabel;
-    private Question q_data;
     private TextView textview_q_title;
-    private Button button_continue;
     LinearLayout linearLayout;
     String Token;
     String JSON_STR;
     Toolbar toolbar;
     ArrayList<Double> arrayList = new ArrayList<Double>();
     Button btnSubmit;
-    JSONObject obj;
     String email;
     double IntValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dummy);
+        setContentView(R.layout.activity_wellness);
         linearLayout = findViewById(R.id.linearlayout);
         btnSubmit = findViewById(R.id.button_continue);
 
@@ -91,7 +88,6 @@ public class Welness_test extends AppCompatActivity {
 
             @Override
             public void onError(Exception e) {
-
             }
         });
 
@@ -120,25 +116,17 @@ public class Welness_test extends AppCompatActivity {
             jsonval.put("hunger", arrayList.get(4));
             jsonval.put("fatigue", arrayList.get(5));
             jsonval.put("motivation", arrayList.get(6));
-            //  jsonEntries.put("",jsonEntries);
             jsonEntries.put("data", jsonval.toString());
             jsonArray.put(jsonEntries);
             json.put("entries", jsonArray);
-            Log.d("JSONDATA", jsonArray.toString());
             JSON_STR = json.toString();
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-  /*      try {
-            obj = new JSONObject(JSON_STR);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
         OkHttpClient client = new OkHttpClient();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/users/" + email + "/activities/wellness").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/clients/" + SingletonSession.Instance().getScope() + "/users/" + SingletonSession.Instance().getEmail() + "/activities/wellness").newBuilder();
         String url = urlBuilder.build().toString();
         Request request = new Request.Builder()
                 .header("Authorization", "Bearer " + Token)
@@ -155,42 +143,45 @@ public class Welness_test extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
                 Toast.makeText(Welness_test.this, mMessage, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-
-                Log.w("Sucess Response", response.toString());
                 String mMessage = response.body().string();
                 Log.d("Response", mMessage);
                 int resCode = response.code();
-//                finish();
-                Welness_test.this.runOnUiThread(new Runnable() {
-                    public void run() {
+                if (resCode == 200) {
+                    Welness_test.this.runOnUiThread(new Runnable() {
+                        public void run() {
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Welness_test.this);
-                        builder.setTitle("Complete !!!");
-                        builder.setMessage("Thanks for your Rating !!!");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                finish();
-                            }
-                        });
-                        builder.show();
-                    }
-                });
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Welness_test.this);
+                            builder.setTitle("Complete !!!");
+                            builder.setMessage("Thanks for your Rating !!!");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    finish();
+                                }
+                            });
+                            builder.show();
+                        }
+                    });
+                } else {
+                    Welness_test.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Welness_test.this, "Resonse Error : " + resCode, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
+                }
             }
         });
     }
 
-
     private void fetchActivities() {
         OkHttpClient client = new OkHttpClient();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/clients/testClient/activities").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/clients/" + SingletonSession.Instance().getScope() + "/activities").newBuilder();
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
@@ -203,7 +194,6 @@ public class Welness_test extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
             }
 
             @Override
@@ -224,8 +214,6 @@ public class Welness_test extends AppCompatActivity {
                     String temp = welness.getString("template");
 
                     JSONObject jsonObject1 = new JSONObject(temp);
-                    Log.d("", jsonObject1.toString());
-
                     JSONArray jsonArray1 = jsonObject1.getJSONArray("pages");
                     JSONObject jsonques = jsonArray1.getJSONObject(0);
                     JSONArray jsonElements = jsonques.getJSONArray("elements");
@@ -236,19 +224,16 @@ public class Welness_test extends AppCompatActivity {
                         LayoutInflater inflater = getLayoutInflater();
                         View view = inflater.inflate(R.layout.activity_welness_test, null);
                         textview_q_title = (TextView) view.findViewById(R.id.textview_q_title);
-                    //    RatingSeekBar ratingSeekBar = (RatingSeekBar) view.findViewById(R.id.rating_seek_bar_one);
-                        RangeSlider rangeSlider=view.findViewById(R.id.rangeSlider);
+                        RangeSlider rangeSlider = view.findViewById(R.id.rangeSlider);
                         ratingLabel = (TextView) view.findViewById(R.id.rating_label_one);
                         int finalI1 = i;
                         rangeSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
                             @Override
                             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
-                                Log.d("total", String.valueOf(value));
-                                Log.d("ListSize", String.valueOf(fromUser));
                                 double d = value;
                                 DecimalFormat f = new DecimalFormat("##.00");
                                 System.out.println(f.format(d));
-                                IntValue= Double.parseDouble(f.format(d));
+                                IntValue = Double.parseDouble(f.format(d));
                                 arrayList.set(finalI1, IntValue);
                             }
                         });
