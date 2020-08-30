@@ -38,8 +38,6 @@ public class PlayerHomeActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Team"));
         tabLayout.addTab(tabLayout.newTab().setText("Player"));
 
-
-     //   tabLayout.addTab(tabLayout.newTab().setText("Movie"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final MyAdapter adapter = new MyAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount());
