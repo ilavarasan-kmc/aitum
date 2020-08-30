@@ -21,6 +21,7 @@ import com.urufit.aitum.adapter.ScheduleAdapter;
 import com.urufit.aitum.model.PlayerProfileModel;
 import com.urufit.aitum.model.ScheduleModel;
 import com.urufit.aitum.model.ServiceModel;
+import com.urufit.aitum.ui.SingletonSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -97,8 +98,7 @@ public class PlayerProfileFragment extends Fragment {
 
     private void fetchPlayerName() {
         OkHttpClient client = new OkHttpClient();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/clients/urufit/users").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/clients/"+ SingletonSession.Instance().getScope() +"/users").newBuilder();
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()

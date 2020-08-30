@@ -77,10 +77,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
+                    android:shadowRadius="@android:integer/config_shortAnimTime"
+                    android:padding="@dimen/dimen_10sdp"
+                    android:background="@color/gradient_back_violet"
                     android:gravity="center"
+                    android:textColor="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="To do List"
+                    android:textStyle="normal"
+                    android:text="HighLights"
                     style="@style/Text.Title"/>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -94,14 +99,29 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <androidx.cardview.widget.CardView
                 style="@style/Card">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:shadowRadius="@android:integer/config_shortAnimTime"
+                        android:padding="@dimen/dimen_10sdp"
+                        android:background="@color/gradient_back_violet"
+                        android:gravity="center"
+                        android:textStyle="normal"
+                        android:textColor="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="KPI Chart"
+                        style="@style/Text.Title"/>
 
                     <com.github.mikephil.charting.charts.RadarChart
+                        android:layout_marginTop="@dimen/dimen_10sdp"
                         android:id="@+id/radarchart"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"/>

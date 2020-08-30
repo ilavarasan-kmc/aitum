@@ -17,6 +17,7 @@ import com.urufit.aitum.activity.TeamProfileActivity;
 import com.urufit.aitum.model.PlayerProfileModel;
 import com.urufit.aitum.model.TeamProfileModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,13 +42,15 @@ public class TeamprofileAdapter extends RecyclerView.Adapter<TeamprofileAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         final TeamProfileModel myListData = listdata.get(position);
         holder.textName.setText(myListData.getName());
-        holder.txt_desc.setText(myListData.getDescription());
+        holder.txt_desc.setText("Team Members : "+myListData.getTeammembers());
+       ArrayList<String> usersList=myListData.getUsers();
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(mContext, TeamProfileActivity.class);
                 intent.putExtra("name",myListData.getName());
-                intent.putExtra("desc",myListData.getDescription());
+                intent.putExtra("desc",myListData.getTeammembers());
+                intent.putStringArrayListExtra("users", usersList);
                 mContext.startActivity(intent);
             }
         });

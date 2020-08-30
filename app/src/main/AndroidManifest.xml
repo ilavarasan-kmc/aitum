@@ -1,23 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.urufit.aitum">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher_foreground"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".activity.LauncherActivity">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:icon,android:theme">
+        <activity android:name=".activity.PlayerProfileActivity"></activity>
+        <activity android:name=".activity.Welness_test" />
+        <activity android:name=".activity.sur_test" />
+        <activity android:name=".activity.ServiceActivity" />
+        <activity android:name=".activity.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".activity.EmptyActivity" />
+        <activity android:name=".activity.SliderScreen" />
+        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".fragment.ActivityFragment" />
+        <activity android:name=".fragment.ManagerCalenderFragment" />
+        <activity android:name=".activity.Monitoring" />
+        <activity android:name=".activity.Performance_Assessment" />
+        <activity android:name=".activity.Clinical_assement_follow_up" />
+        <activity android:name=".fragment.SettingsActivity" />
+        <activity android:name=".activity.Wellbeing" />
+        <activity android:name=".activity.Load_Quantification" />
+        <activity android:name=".activity.Kinanthropometry" />
+        <activity android:name=".activity.Sprint" />
+        <activity android:name=".activity.Technical_Assessment" />
+        <activity android:name=".activity.COD" />
+        <activity android:name=".activity.Strength" />
+        <activity android:name=".activity.Power" />
+        <activity android:name=".activity.Endurance" />
+        <activity android:name=".activity.SurveyActivity" />
+        <activity android:name=".activity.ReportsActivity" />
+        <activity android:name=".activity.Athlete_Home_Activity" />
+        <activity android:name=".activity.TodoActivity" />
+        <activity android:name=".activity.ScheduleActivity" />
+        <activity android:name=".activity.PlayerHomeActivity" />
+        <activity android:name=".activity.TeamProfileActivity"/>
+        <activity android:name=".ui.ImagePickerActivity"/>
+        <activity android:name=".activity.AddScheduleActivity"/>
+        <activity android:name=".activity.DummyTest"/>
+
+        <!-- uCrop cropping activity -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- cache directory file provider paths -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>

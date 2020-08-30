@@ -97,6 +97,7 @@
     <color name="gradientLightGreen">#21E8AC</color>
     <color name="gradientdarkBlue">#2e6fbc</color>
     <color name="gradientLightblue">#8ec0e3</color>
+    <color name="gradient_back_violet">#8e24aa</color>
 
     <color name="grey_50">#FAFAFA</color>
     <color name="grey_700">#616161</color>

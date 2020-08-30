@@ -50,6 +50,7 @@ import com.urufit.aitum.R;
 import com.urufit.aitum.databinding.FragmentManagerSettingsBinding;
 import com.urufit.aitum.model.SettingsModel;
 import com.urufit.aitum.ui.ImagePickerActivity;
+import com.urufit.aitum.ui.SingletonSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -213,7 +214,7 @@ public class SettingsActivity extends AppCompatActivity {
           String  fileNamePhoto = photo.getName();
 
 //resave file with new name
-            File newFile = new File(sub_name+".jpg");
+            File newFile = new File(SingletonSession.Instance().getUserId() +".jpg");
             photo.renameTo(newFile);
 
             Log.d("ila",newFile.toString());
@@ -306,12 +307,6 @@ public class SettingsActivity extends AppCompatActivity {
         intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
         intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
-
-/*
-       File image = new File("ilav"+ ".jpg");
-        Uri uriSavedImage = Uri.fromFile(image);
-
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);*/
 
         startActivityForResult(intent, REQUEST_IMAGE);
     }

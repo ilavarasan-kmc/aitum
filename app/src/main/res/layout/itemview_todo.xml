@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayout"
-    android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeightLarge">
+<androidx.cardview.widget.CardView style="@style/Card">
 
-    <CheckBox
-        android:id="@+id/check_todo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:contentDescription="Icon" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_marginLeft="@dimen/dimen_5sdp"
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_toEndOf="@id/check_todo"
-        android:layout_toRightOf="@id/check_todo"
-        android:gravity="center_vertical"
-        android:textSize="16sp"/>
+        <CheckBox
+            android:id="@+id/check_todo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:contentDescription="Icon" />
 
-    <ImageView
-        android:layout_marginLeft="@dimen/dimen_10sdp"
-        android:layout_centerVertical="true"
-    android:src="@drawable/ic_close_black_24dp"
-    android:id="@+id/img_edit"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:layout_alignParentRight="true"/>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_5sdp"
+            android:layout_toEndOf="@id/check_todo"
+            android:layout_toRightOf="@id/check_todo"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-    <!--<ImageView
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:src="@drawable/ic_edit_black_24dp"
-        android:id="@+id/img_delete"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_toLeftOf="@+id/img_edit"/>-->
+        <ImageView
+            android:id="@+id/img_edit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_10sdp"
+            android:src="@drawable/ic_close_black_24dp" />
 
-</RelativeLayout>
+        <!--<ImageView
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:src="@drawable/ic_edit_black_24dp"
+            android:id="@+id/img_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toLeftOf="@+id/img_edit"/>-->
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

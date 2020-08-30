@@ -11,13 +11,15 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        app:tabTextColor="@color/white"
-        app:tabIndicatorColor="@color/pink"
+        app:tabTextColor="@color/black"
+        app:tabIndicatorColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:elevation="10dp">
+        android:background="@color/white"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/gradient_back_violet"
+        app:tabBackground="@drawable/custom_indicator">
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
