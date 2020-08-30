@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_marginTop="@dimen/dimen_5sdp"
+        android:id="@+id/dialog_btn_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="ilavarasan"
+        android:padding="@dimen/dimen_10sdp"
+        android:textColor="@color/white"
+        android:textAlignment="textStart"
+        android:textSize="15sp" />
+
+</LinearLayout>
