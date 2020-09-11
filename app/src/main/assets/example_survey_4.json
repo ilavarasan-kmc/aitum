@@ -1,0 +1,130 @@
+{
+  "survey_properties": {
+    "intro_message": "<strong>Your feedback helps us to build a better Test.</strong>",
+    "end_message": "Thank you for having the time to take our survey.",
+    "skip_intro": false
+  },
+  "questions": [
+    {
+      "question_type": "Radioboxes",
+      "question_title": "1. Rate your quality of Wellness last night*",
+      "description": "",
+      "required": true,
+      "random_choices": false,
+      "choices": [
+        "Very appreciated",
+        "Moderately appreciated",
+        "Not at all appreciated"
+      ]
+    },
+    {
+      "question_type": "Radioboxes",
+      "question_title": "2. How many hours did you sleep last night?*",
+      "description": "",
+      "required": true,
+      "random_choices": true,
+      "choices": [
+        "<font color='#880000'>1</font>",
+        "<font color='#008800'>2</font>",
+        "<font color='#000088'>3</font>",
+        "<font color='#880000'>4</font>",
+        "<font color='#008800'>5</font>",
+        "<font color='#000088'>6</font>",
+        "<font color='#880000'>7</font>",
+        "<font color='#008800'>8</font>",
+        "<font color='#000088'>9</font>",
+        "<font color='#000088'>10</font>"
+      ]
+    }, {
+      "question_type": "Radioboxes",
+      "question_title": "3. Rate the level of muscle soreness you feel today?*",
+      "description": "",
+      "required": true,
+      "random_choices": true,
+      "choices": [
+        "<font color='#880000'>1</font>",
+        "<font color='#008800'>2</font>",
+        "<font color='#000088'>3</font>",
+        "<font color='#880000'>4</font>",
+        "<font color='#008800'>5</font>",
+        "<font color='#000088'>6</font>",
+        "<font color='#880000'>7</font>",
+        "<font color='#008800'>8</font>",
+        "<font color='#000088'>9</font>",
+        "<font color='#000088'>10</font>"
+      ]
+    }, {
+      "question_type": "Radioboxes",
+      "question_title": "4. Do you feel you get irritated or angry easily?*",
+      "description": "",
+      "required": true,
+      "random_choices": true,
+      "choices": [
+        "<font color='#880000'>1</font>",
+        "<font color='#008800'>2</font>",
+        "<font color='#000088'>3</font>",
+        "<font color='#880000'>4</font>",
+        "<font color='#008800'>5</font>",
+        "<font color='#000088'>6</font>",
+        "<font color='#880000'>7</font>",
+        "<font color='#008800'>8</font>",
+        "<font color='#000088'>9</font>",
+        "<font color='#000088'>10</font>"
+      ]
+    }, {
+      "question_type": "Radioboxes",
+      "question_title": "5. Rate your level of hunger today?*",
+      "description": "",
+      "required": true,
+      "random_choices": true,
+      "choices": [
+        "<font color='#880000'>1</font>",
+        "<font color='#008800'>2</font>",
+        "<font color='#000088'>3</font>",
+        "<font color='#880000'>4</font>",
+        "<font color='#008800'>5</font>",
+        "<font color='#000088'>6</font>",
+        "<font color='#880000'>7</font>",
+        "<font color='#008800'>8</font>",
+        "<font color='#000088'>9</font>",
+        "<font color='#000088'>10</font>"
+      ]
+    }, {
+      "question_type": "Radioboxes",
+      "question_title": "6. Rate your level of fatigue today?*",
+      "description": "",
+      "required": true,
+      "random_choices": true,
+      "choices": [
+        "<font color='#880000'>1</font>",
+        "<font color='#008800'>2</font>",
+        "<font color='#000088'>3</font>",
+        "<font color='#880000'>4</font>",
+        "<font color='#008800'>5</font>",
+        "<font color='#000088'>6</font>",
+        "<font color='#880000'>7</font>",
+        "<font color='#008800'>8</font>",
+        "<font color='#000088'>9</font>",
+        "<font color='#000088'>10</font>"
+      ]
+    },{
+      "question_type": "Radioboxes",
+      "question_title": "7. Rate your level of motivation today*",
+      "description": "",
+      "required": true,
+      "random_choices": true,
+      "choices": [
+        "<font color='#880000'>1</font>",
+        "<font color='#008800'>2</font>",
+        "<font color='#000088'>3</font>",
+        "<font color='#880000'>4</font>",
+        "<font color='#008800'>5</font>",
+        "<font color='#000088'>6</font>",
+        "<font color='#880000'>7</font>",
+        "<font color='#008800'>8</font>",
+        "<font color='#000088'>9</font>",
+        "<font color='#000088'>10</font>"
+      ]
+    }
+  ]
+}
