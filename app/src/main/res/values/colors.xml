@@ -3,6 +3,9 @@
     <color name="colorPrimary">#096767</color>
     <color name="colorPrimaryDark">#0D3030</color>
     <color name="colorAccent">#0E2929</color>
+    <color name="colorPink">#AA00FF</color>
+    <color name="colorPinkDark">#130B18</color>
+    <color name="colorBackground">#FBFBFB</color>
 
     <!--<color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
@@ -14,6 +17,7 @@
     <color name="black">#000</color>
     <color name="green">#588D18</color>
     <color name="red">#E70808</color>
+    <color name="light_text_grey">#5E5E5E</color>
 
     <!-- dots active colors -->
     <color name="dot_light_screen1">#f98da5</color>

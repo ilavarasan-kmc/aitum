@@ -4,12 +4,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/navigation_home_athlete"
-            android:icon="@drawable/home_icon"
+            android:icon="@drawable/ic_baseline_home_24"
             android:title="Home" />
 
         <item
             android:id="@+id/navigation_calender"
-            android:icon="@drawable/calendarnew_icon"
+            android:icon="@drawable/ic_calender"
             android:title="Calendar" />
 
         <item
@@ -19,7 +19,7 @@
 
         <item
             android:id="@+id/nav_athlete_setting"
-            android:icon="@drawable/setting_icon"
+            android:icon="@drawable/ic_baseline_settings_applications_24"
             android:title="Settings" />
 
     </group>
@@ -28,7 +28,7 @@
         <menu>
             <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/logout_icon"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
                 android:title="Logout" />
 
         </menu>

@@ -10,9 +10,9 @@
     -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/dark_purple</item>
+        <item name="colorPrimaryDark">@color/dark_purple</item>
+        <item name="colorAccent">@color/light_purple</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -82,6 +82,14 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="TextHeader" parent="@style/TextAppearance.AppCompat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/light_text_grey</item>
+        <item name="android:textSize">@dimen/dimen_24dp</item>
+        <item name="android:fontFamily">@fonts/roboto_bold</item>
     </style>
 
     <style name="Text.Secondary" parent="@style/Text">
@@ -183,8 +191,7 @@
     <style name="ScrollView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:overScrollMode">never</item>
-        <item name="android:scrollbars">none</item>
+        <item name="android:fillViewport">true</item>
     </style>
 
     <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -213,6 +220,17 @@
         <item name="backgroundTint">@color/dark_blue</item>
         <item name="tint">@color/white</item>
         <item name="useCompatPadding">true</item>
+    </style>
+
+    <style name="CustomFontStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@fonts/roboto_bold</item>
+    </style>
+
+    <style name="View">
+        <item name="android:layout_width">@dimen/dimen_40dp</item>
+        <item name="android:layout_height">@dimen/dimen_6dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">@dimen/_8dp</item>
     </style>
 
 

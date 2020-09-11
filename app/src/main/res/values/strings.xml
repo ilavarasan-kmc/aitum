@@ -54,5 +54,15 @@
     <string name="child_text">Enter child here...</string>
 
 
+    <string name="dashboard">Dashboard</string>
+    <string name="latest_updates">Latest Updates</string>
+    <string name="todo_list">To do List</string>
+    <string name="weekly_schedule">Weekly Schedule</string>
+    <string name="monitoring">Monitoring</string>
+    <string name="assessment">Assessment</string>
+    <string name="medical">Medical</string>
+    <string name="profile">Profile</string>
+
+
 </resources>
 

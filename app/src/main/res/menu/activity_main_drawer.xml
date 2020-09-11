@@ -4,31 +4,31 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/home_icon"
+            android:icon="@drawable/ic_baseline_home_24"
             android:title="Dashboard" />
 
         <item
             android:id="@+id/nav_monitoring"
-            android:icon="@drawable/monitor_icon"
+            android:icon="@drawable/ic_monitoring"
             android:title="Monitoring" />
         <item
             android:id="@+id/nav_daily_avtivity"
-            android:icon="@drawable/daily_icon"
-            android:title="Activity" />
+            android:icon="@drawable/ic_activity_icon"
+            android:title="Assessment" />
 
         <item
             android:id="@+id/nav_event_calendar"
-            android:icon="@drawable/calendarnew_icon"
+            android:icon="@drawable/ic_calender"
             android:title="Calendar" />
 
         <item
             android:id="@+id/nav_medical"
-            android:icon="@drawable/moedical_icon"
+            android:icon="@drawable/ic_medical"
             android:title="Medical" />
 
         <item
             android:id="@+id/nav_service"
-            android:icon="@drawable/survey_24dp"
+            android:icon="@drawable/ic_baseline_settings_applications_24"
             android:title="Service" />
 
         <item
@@ -41,10 +41,9 @@
             android:icon="@drawable/survey_24dp"
             android:title="Survey" />
 
-
         <item
             android:id="@+id/nav_setting"
-            android:icon="@drawable/setting_icon"
+            android:icon="@drawable/ic_baseline_settings_applications_24"
             android:title="Settings" />
 
     </group>
@@ -53,7 +52,7 @@
         <menu>
             <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/logout_icon"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
                 android:title="Logout" />
 
         </menu>

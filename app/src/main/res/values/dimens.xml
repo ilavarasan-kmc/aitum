@@ -50,6 +50,9 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dimen_5sdp">5.00dp</dimen>
     <dimen name="dimen_10sdp">10.00dp</dimen>
+    <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_24dp">24dp</dimen>
+    <dimen name="dimen_6dp">6dp</dimen>
 
     <dimen name="dots_height">30dp</dimen>
     <dimen name="dots_margin_bottom">20dp</dimen>
