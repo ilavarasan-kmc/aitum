@@ -1,5 +1,7 @@
 package com.urufit.aitum.ui;
 
+import java.util.ArrayList;
+
 public class SingletonSession {
 
     private static SingletonSession instance;
@@ -8,6 +10,8 @@ public class SingletonSession {
     private String role;
     private String Scope;
     private String userId;
+    private ArrayList<String>ScopeList;
+    private ArrayList<String>RoleList;
     private SingletonSession() {}
 
     public static SingletonSession Instance()
@@ -59,5 +63,21 @@ public class SingletonSession {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public ArrayList<String> getScopeList() {
+        return ScopeList;
+    }
+
+    public void setScopeList(ArrayList<String> scopeList) {
+        ScopeList = scopeList;
+    }
+
+    public ArrayList<String> getRoleList() {
+        return RoleList;
+    }
+
+    public void setRoleList(ArrayList<String> roleList) {
+        RoleList = roleList;
     }
 }
