@@ -1,16 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-        <include layout="@layout/toolbar_customs_layout" />
+    <include layout="@layout/toolbar_customs_layout" />
 
+    <androidx.cardview.widget.CardView
 
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
+        style="@style/Card"
+        android:layout_marginTop="@dimen/dimen_10sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_take_test"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/pink"
+                android:drawableLeft="@drawable/ic_backup_black_24dp"
+                android:drawablePadding="@dimen/dimen_10sdp"
+                android:text="Upload Data"
+                android:textAlignment="textStart"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+
+        style="@style/Card">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/pink"
+                android:drawableLeft="@drawable/ic_test"
+                android:drawablePadding="@dimen/dimen_10sdp"
+                android:text="Dashboard"
+                android:textAlignment="textStart"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

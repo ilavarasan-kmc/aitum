@@ -15,6 +15,7 @@
             android:orientation="vertical">
 
     <TextView
+        android:fontFamily="@fonts/roboto_bold"
         android:layout_margin="@dimen/dimen_10sdp"
         android:shadowRadius="@android:integer/config_shortAnimTime"
         android:padding="@dimen/dimen_10sdp"

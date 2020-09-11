@@ -15,6 +15,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:fontFamily="@fonts/roboto_bold"
                 android:id="@+id/textview_q_title"
                 style="?android:textAppearanceMedium"
                 android:layout_width="match_parent"
@@ -27,17 +28,6 @@
                 android:textColor="#000"
                 android:textSize="16sp" />
 
-            <!--<com.trafi.ratingseekbar.RatingSeekBar
-                android:id="@+id/rating_seek_bar_one"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:rsb_max="10"
-                app:rsb_active_color="#1F757B"
-                app:rsb_active_text_color="#F6EEEE"
-                app:rsb_inactive_color="#C0BDBD"
-                app:rsb_inactive_text_color="#C0BDBD"
-                />-->
             <com.google.android.material.slider.RangeSlider
                 android:background="@drawable/rounded_border"
                 android:layout_width="match_parent"
@@ -54,6 +44,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:fontFamily="@fonts/roboto_bold"
                     android:layout_marginLeft="@dimen/dimen_10sdp"
                     android:text="Min (0)"
                     style="@style/TextAppearance.AppCompat.Caption"
@@ -62,6 +53,7 @@
                     android:layout_marginBottom="32dp"/>
 
                 <TextView
+                    android:fontFamily="@fonts/roboto_bold"
                     android:layout_marginRight="@dimen/dimen_10sdp"
                     android:text="Max (10)"
                     android:layout_alignParentRight="true"

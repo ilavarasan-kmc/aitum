@@ -101,6 +101,7 @@
                                 android:src="@drawable/technical_icon" />
 
                             <TextView
+                                android:id="@+id/txt_tech_assessment"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -151,6 +152,7 @@
                                 android:src="@drawable/sprint_icon" />
 
                             <TextView
+                                android:id="@+id/txt_sprint"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -211,6 +213,7 @@
                                 android:src="@drawable/power_icon" />
 
                             <TextView
+                                android:id="@+id/txt_power"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -261,6 +264,7 @@
                                 android:src="@drawable/strength_icon" />
 
                             <TextView
+                                android:id="@+id/txt_strength"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -321,6 +325,7 @@
                                 android:src="@drawable/endurance_icon" />
 
                             <TextView
+                                android:id="@+id/txt_endurance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -371,6 +376,7 @@
                                 android:backgroundTint="@color/white"/>
 
                             <TextView
+                                android:id="@+id/txt_cod"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
