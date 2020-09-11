@@ -128,5 +128,8 @@ dependencies {
 
     implementation 'com.github.kunzisoft:android-switchdatetimepicker:2.0'
 
+    //week view
+    implementation 'com.github.vatsaldesai92:MyDynamicCalendarLibrary:1.0.1'
+
 }
 apply plugin: 'com.google.gms.google-services'
