@@ -34,6 +34,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.results.Tokens;
+import com.desai.vatsal.mydynamiccalendar.EventModel;
+import com.desai.vatsal.mydynamiccalendar.GetEventListListener;
+import com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar;
+import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -47,6 +51,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.google.android.material.navigation.NavigationView;
 import com.urufit.aitum.R;
+import com.urufit.aitum.adapter.ScheduleAdapter;
 import com.urufit.aitum.adapter.TodoAdapter;
 import com.urufit.aitum.fragment.ManagerCalenderFragment;
 import com.urufit.aitum.fragment.SettingsActivity;
@@ -61,6 +66,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -77,19 +84,21 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
     public NavigationView navigationView;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public AlertDialog.Builder builder;
-    CardView card_monitoring, card_activity, card_medical;
+    CardView card_monitoring, card_activity, card_medical, card_profile;
     private View navHeader;
-    TextView txt_name , txt_user_name, txt_scope;
+    TextView txt_name , txt_user_name, txt_scope,txt_username,txt_email;
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
     String Token, Role;
     private static final int SURVEY_REQUEST = 1337;
-    ArrayList<String> numbersList = new ArrayList<>();
+    ArrayList<String> roleList = new ArrayList<>();
     ArrayList<String> scopeList = new ArrayList<>();
     private RadarChart chart;
-    TodoAdapter adapter;
+    ScheduleAdapter adapter;
     RecyclerView recyclerView;
     List<TodoModel> myListData;
+    private MyDynamicCalendar myCalendar;
+    ArrayList<String>teamNameList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +110,20 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
     private void BindMethod() {
         toolbar = findViewById(R.id.tool);
         toolbar.setTitle("ATIUM");
+        toolbar.setTitleTextAppearance(getApplicationContext(),R.style.CustomFontStyle);
         setSupportActionBar(toolbar);
         chart = findViewById(R.id.radarchart);
-        //   CardView cardtodo=(CardView)findViewById(R.i/d.card_todo) ;
-        //       CardView card_survey=(CardView)findViewById(R.id.card_survey) ;
+        card_monitoring = findViewById(R.id.card_monitoring);
+        card_activity = findViewById(R.id.card_activity);
+        card_medical = findViewById(R.id.card_medical);
+        card_profile = findViewById(R.id.card_player_prof);
+        txt_username = findViewById(R.id.txt_username);
+        txt_email = findViewById(R.id.txt_email);
+        txt_username.setText(SingletonSession.Instance().getUsername());
+        txt_email.setText(SingletonSession.Instance().getEmail());
+        TextView dayTime = findViewById(R.id.day_time);
         builder = new AlertDialog.Builder(this, R.style.CustomDialogTheme);
         drawerLayout = findViewById(R.id.drawer_layout);
-        //  navigationView = findViewById(R.id.navigationView);
         actionBarDrawerToggle = new ActionBarDrawerToggle(Athlete_Home_Activity.this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
@@ -118,6 +134,47 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+        if (timeOfDay >= 0 && timeOfDay < 12) {
+            dayTime.setText("Good Morning");
+            //Toast.makeText(this, "Good Morning", Toast.LENGTH_SHORT).show();
+        } else if (timeOfDay >= 12 && timeOfDay < 16) {
+            dayTime.setText("Good Afternoon");
+            //      Toast.makeText(this, "Good Afternoon", Toast.LENGTH_SHORT).show();
+        } else if (timeOfDay >= 16 && timeOfDay < 21) {
+            dayTime.setText("Good Evening");
+            //  Toast.makeText(this, "Good Evening", Toast.LENGTH_SHORT).show();
+        } else if (timeOfDay >= 21 && timeOfDay < 24) {
+            dayTime.setText("Good Night");
+            //   Toast.makeText(this, "Good Night", Toast.LENGTH_SHORT).show();
+        }
+
+        card_monitoring.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Monitoring.class);
+                startActivity(intent);
+            }
+        });
+
+        card_activity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Performance_Assessment.class);
+                startActivity(intent);
+            }
+        });
+
+        card_medical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Clinical_assement_follow_up.class);
+                startActivity(intent);
+            }
+        });
+
         hidemenu();
 
         AWSMobileClient.getInstance().getTokens(new com.amazonaws.mobile.client.Callback<Tokens>() {
@@ -125,7 +182,8 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
             public void onResult(Tokens result) {
                 Token = result.getIdToken().getTokenString();
                 Log.d("Token=", Token);
-                fetchEvents();
+                getIndividualSchedules();
+                getTeamName();
             }
 
             @Override
@@ -136,7 +194,9 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
 
         // Radar chart
 
-        chart.setBackgroundColor(Color.rgb(60, 65, 82));
+       chart.setBackgroundColor(Color.rgb(60, 65, 82));
+    //   chart.setBackgroundColor(Color.rgb(153, 0, 204));
+
 
         chart.getDescription().setEnabled(false);
 
@@ -191,14 +251,177 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         l.setYEntrySpace(5f);
         l.setTextColor(Color.WHITE);
 
+        //My Callender
+
+        myCalendar = (MyDynamicCalendar) findViewById(R.id.myCalendar);
+
+        // myCalendar.showMonthViewWithBelowEvents();
+        myCalendar.showAgendaView();
+
+        myCalendar.setOnDateClickListener(new OnDateClickListener() {
+            @Override
+            public void onClick(Date date) {
+                Log.e("date", String.valueOf(date));
+            }
+
+            @Override
+            public void onLongClick(Date date) {
+                Log.e("date", String.valueOf(date));
+            }
+        });
+
+        myCalendar.setCalendarBackgroundColor("#eeeeee");
+//        myCalendar.setCalendarBackgroundColor(R.color.gray);
+
+        myCalendar.setHeaderBackgroundColor("#000066");
+//        myCalendar.setHeaderBackgroundColor(R.color.black);
+
+        myCalendar.setHeaderTextColor("#ffffff");
+//        myCalendar.setHeaderTextColor(R.color.white);
+
+        myCalendar.setNextPreviousIndicatorColor("#ffffff");
+//        myCalendar.setNextPreviousIndicatorColor(R.color.black);
+
+        myCalendar.setWeekDayLayoutBackgroundColor("#ffffff");
+//        myCalendar.setWeekDayLayoutBackgroundColor(R.color.black);
+
+        myCalendar.setWeekDayLayoutTextColor("#660000");
+//        myCalendar.setWeekDayLayoutTextColor(R.color.black);
+
+//        myCalendar.isSaturdayOff(true, "#ffffff", "#ff0000");
+//        myCalendar.isSaturdayOff(true, R.color.white, R.color.red);
+
+//        myCalendar.isSundayOff(true, "#658745", "#254632");
+//        myCalendar.isSundayOff(true, R.color.white, R.color.red);
+
+        myCalendar.setExtraDatesOfMonthBackgroundColor("#e6e6e6");
+//        myCalendar.setExtraDatesOfMonthBackgroundColor(R.color.black);
+
+        myCalendar.setExtraDatesOfMonthTextColor("#756325");
+//        myCalendar.setExtraDatesOfMonthTextColor(R.color.black);
+
+//        myCalendar.setDatesOfMonthBackgroundColor(R.drawable.event_view);
+        myCalendar.setDatesOfMonthBackgroundColor("#ffffff");
+//        myCalendar.setDatesOfMonthBackgroundColor(R.color.black);
+
+        myCalendar.setDatesOfMonthTextColor("#745632");
+//        myCalendar.setDatesOfMonthTextColor(R.color.black);
+
+//        myCalendar.setCurrentDateBackgroundColor("#123412");
+//        myCalendar.setCurrentDateBackgroundColor(R.color.black);
+
+        myCalendar.setCurrentDateTextColor("#00e600");
+//        myCalendar.setCurrentDateTextColor(R.color.black);
+
+        myCalendar.setEventCellBackgroundColor("#ffffff");
+//        myCalendar.setEventCellBackgroundColor(R.color.black);
+
+        myCalendar.setEventCellTextColor("#ff9933");
+//        myCalendar.setEventCellTextColor(R.color.black);
+
+        myCalendar.addEvent("9-9-2020", "8:00", "8:15", "Today Event 1");
+        myCalendar.addEvent("9-9-2020", "9:00", "9:15", "Today Event 1");
+        myCalendar.addEvent("8-9-2020", "11:00", "12:15", "Today Event 1");
+        myCalendar.addEvent("10-9-2020", "8:15", "8:30", "Today Event 2");
+        myCalendar.addEvent("10-9-2020", "8:30", "8:45", "Today Event 3");
+        myCalendar.addEvent("11-10-2016", "8:45", "9:00", "Today Event 4");
+        myCalendar.addEvent("12-9-2020", "8:00", "8:30", "Today Event 5");
+        myCalendar.addEvent("7-9-2020", "9:00", "10:00", "Today Event 6");
+        myCalendar.addEvent("13-9-2020", "8:00", "10:00", "Today Event 6");
+
+        myCalendar.getEventList(new GetEventListListener() {
+            @Override
+            public void eventList(ArrayList<EventModel> eventList) {
+
+                Log.e("tag", "eventList.size():-" + eventList.size());
+                for (int i = 0; i < eventList.size(); i++) {
+                    Log.e("tag", "eventList.getStrName:-" + eventList.get(i).getStrName());
+                }
+
+            }
+        });
+
+//        myCalendar.updateEvent(0, "5-10-2016", "8:00", "8:15", "Today Event 111111");
+
+//        myCalendar.deleteEvent(2);
+
+//        myCalendar.deleteAllEvent();
+
+        myCalendar.setBelowMonthEventTextColor("#425684");
+//        myCalendar.setBelowMonthEventTextColor(R.color.black);
+
+        myCalendar.setBelowMonthEventDividerColor("#635478");
+//        myCalendar.setBelowMonthEventDividerColor(R.color.black);
+
+        myCalendar.setHolidayCellBackgroundColor("#654248");
+//        myCalendar.setHolidayCellBackgroundColor(R.color.black);
+
+        myCalendar.setHolidayCellTextColor("#d590bb");
+//        myCalendar.setHolidayCellTextColor(R.color.black);
+
+        myCalendar.setHolidayCellClickable(false);
+        myCalendar.addHoliday("2-11-2016");
+        myCalendar.addHoliday("8-11-2016");
+        myCalendar.addHoliday("12-11-2016");
+        myCalendar.addHoliday("13-11-2016");
+        myCalendar.addHoliday("8-10-2016");
+        myCalendar.addHoliday("10-12-2016");
+
+
+//        myCalendar.setCalendarDate(5, 10, 2016);
+
     }
 
-    private void fetchEvents() {
+    private void getIndividualSchedules() {
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/clients/" + SingletonSession.Instance().getScope() + "/users/"+SingletonSession.Instance().getEmail()+"/schedules").newBuilder();
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .header("Authorization", "Bearer " + Token)
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                String mMessage = e.getMessage().toString();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                Log.w("Sucess Response", response.toString());
+                String mMessage = response.body().string();
+                try {
+                    JSONArray jsonArray = new JSONArray(mMessage);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        JSONArray jsonEvents = jsonObject.getJSONArray("events");
+                        for (int j = 0; j < jsonEvents.length(); j++) {
+                            JSONObject jsonEventsObject = jsonEvents.getJSONObject(j);
+                            JSONArray jsonactivities = jsonEventsObject.getJSONArray("activities");
+                            for (int k = 0; k < jsonactivities.length(); k++) {
+                                JSONObject jsonActivitiesObject = jsonactivities.getJSONObject(k);
+                                String TestName=jsonActivitiesObject.getString("name");
+                                teamNameList.add(TestName);
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    private void getTeamName() {
 
         OkHttpClient client = new OkHttpClient();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api-dev.atium.in/v1/clients/"+ SingletonSession.Instance().getScope() +"/events").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/clients/" + SingletonSession.Instance().getScope() + "/users/"+SingletonSession.Instance().getEmail()+"/teams?type=member").newBuilder();
         String url = urlBuilder.build().toString();
+
         Request request = new Request.Builder()
                 .header("Authorization", "Bearer " + Token)
                 .url(url)
@@ -214,42 +437,71 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-
                 Log.w("Sucess Response", response.toString());
                 String mMessage = response.body().string();
-                Log.d("Response", mMessage);
+                try {
+                    JSONArray jsonArray = new JSONArray(mMessage);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String TeamName=jsonObject.getString("name");
+                        getTeamSchedule(TeamName);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-                if ("null".equalsIgnoreCase(mMessage)) {
-                    Athlete_Home_Activity.this.runOnUiThread(new Runnable() {
+    private void getTeamSchedule(String teamName) {
+
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.atium.in/v1/clients/" + SingletonSession.Instance().getScope() + "/teams/"+teamName+"/schedules").newBuilder();
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .header("Authorization", "Bearer " + Token)
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                Log.w("Sucess Response", response.toString());
+                String mMessage = response.body().string();
+                try {
+                    JSONArray jsonArray = new JSONArray(mMessage);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        JSONArray jsonEvents = jsonObject.getJSONArray("events");
+                        for (int j = 0; j < jsonEvents.length(); j++) {
+                            JSONObject jsonEventsObject = jsonEvents.getJSONObject(j);
+                            JSONArray jsonactivities = jsonEventsObject.getJSONArray("activities");
+                            for (int k = 0; k < jsonactivities.length(); k++) {
+                                JSONObject jsonActivitiesObject = jsonactivities.getJSONObject(k);
+                                String TestName=jsonActivitiesObject.getString("name");
+                                teamNameList.add(TestName);
+                            }
+                        }
+                    }
+                    adapter = new ScheduleAdapter(getApplicationContext(),teamNameList);
+
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(Athlete_Home_Activity.this, mMessage, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    try {
-                        JSONArray jsonArray = new JSONArray(mMessage);
-                        myListData = new ArrayList<>();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            TodoModel todoModel = new TodoModel(jsonObject.getString("title"));
-                            myListData.add(todoModel);
-                            adapter = new TodoAdapter(myListData, getApplicationContext());
-                            Athlete_Home_Activity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    recyclerView.setAdapter(adapter);
-                                }
-                            });
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Athlete_Home_Activity.this.runOnUiThread(new Runnable() {
-                        public void run() {
+                            recyclerView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }
                     });
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -311,9 +563,8 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_athlete_menus, menu);
         MenuItem item = menu.findItem(R.id.menu_change_user);
-        Intent intent = getIntent();
-        String result = intent.getStringExtra("Role");
-        if ("athlete".equalsIgnoreCase(result)) {
+        String Role = SingletonSession.Instance().getRole();
+        if ("athlete".equalsIgnoreCase(Role)) {
             item.setVisible(false);
         } else {
             item.setVisible(true);
@@ -331,8 +582,9 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
                 LayoutInflater inflater = getLayoutInflater();
                 View dialogLayout = inflater.inflate(R.layout.alert_dialog, null);
                 ListView listView = dialogLayout.findViewById(R.id.list_View);
-                numbersList = (ArrayList<String>) getIntent().getSerializableExtra("arraylist");
-                MyListAdapter adapter = new MyListAdapter(this, numbersList);
+              //  numbersList = (ArrayList<String>) getIntent().getSerializableExtra("arraylist");
+                roleList = SingletonSession.Instance().getRoleList();
+                MyListAdapter adapter = new MyListAdapter(this, roleList);
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 builder.setView(dialogLayout);
@@ -348,7 +600,7 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
                             finish();
                         } else {
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                            intent.putExtra("arraylist", numbersList);
+                            intent.putExtra("arraylist", roleList);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             finish();
@@ -362,7 +614,8 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
                 LayoutInflater inflaterScope = getLayoutInflater();
                 View view = inflaterScope.inflate(R.layout.alert_dialog_scope, null);
                 ListView listViewScope = view.findViewById(R.id.list_View);
-                scopeList = (ArrayList<String>) getIntent().getSerializableExtra("scopelist");
+              //  scopeList = (ArrayList<String>) getIntent().getSerializableExtra("scopelist");
+                scopeList = SingletonSession.Instance().getScopeList();
                 MyListScopeAdapter adapterScope = new MyListScopeAdapter(this, scopeList);
                 listViewScope.setAdapter(adapterScope);
                 adapterScope.notifyDataSetChanged();
@@ -492,12 +745,12 @@ public class Athlete_Home_Activity extends AppCompatActivity implements Navigati
         txt_scope = (TextView) navHeader.findViewById(R.id.txt_scope);
         navigationView.setNavigationItemSelectedListener(this);
 
-        String name = getIntent().getStringExtra("Name");
+       /* String name = getIntent().getStringExtra("Name");
         Role = getIntent().getStringExtra("Role");
         SharedPreferences pref = getApplicationContext().getSharedPreferences("NavItems", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("user_name", name);
-        editor.apply();
+        editor.apply();*/
 
         txt_user_name.setText(SingletonSession.Instance().getUsername());
         txt_scope.setText(SingletonSession.Instance().getScope());

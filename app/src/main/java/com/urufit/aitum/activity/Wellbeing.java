@@ -12,9 +12,11 @@ import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.results.Tokens;
@@ -44,26 +46,52 @@ public class Wellbeing extends AppCompatActivity {
     Toolbar toolbar;
     private static final int SURVEY_REQUEST = 1337;
     String Token;
-    WebView webView;
+    Button cardTaketest,cardUploadTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_welbeing);
  //       Spinner spinner = (Spinner) findViewById(R.id.spinner_test);
-       webView=findViewById(R.id.webView);
-       // Button btn_schedule=findViewById(R.id.btn_schedule);
+        cardTaketest=findViewById(R.id.btn_take_test);
+        cardUploadTest=findViewById(R.id.btn_dashboard);
 
         toolbar = findViewById(R.id.toolbar_customs);
         toolbar.setTitle("Wellbeing Report");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        cardTaketest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Welness_test.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+            });
+
+        cardUploadTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ComingSoonActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 
         AWSMobileClient.getInstance().getTokens(new com.amazonaws.mobile.client.Callback<Tokens>() {
             @Override
             public void onResult(Tokens result) {
                 Token = result.getIdToken().getTokenString();
                 Log.d("Token=", Token);
-                loadWellnessDashboard();
+            //    loadWellnessDashboard();
             }
             @Override
             public void onError(Exception e) {
@@ -98,14 +126,8 @@ public class Wellbeing extends AppCompatActivity {
                 Log.w("msg", mMessage);
                 try {
                     JSONObject json = new JSONObject(mMessage);
-                    String EmbUrl=json.getString("EmbedUrl");
-                   String htmlcon="<iframe  src="+EmbUrl+"></iframe>";
                     Wellbeing.this.runOnUiThread(new Runnable() {
                         public void run() {
-                       //     webView.loadUrl(EmbUrl);
-                            webView.loadData("<iframe src=\"http://www.google.com\"></iframe>", "text/html",
-                                    "utf-8");
-                            webView.getSettings().setJavaScriptEnabled(true);
                         }
                     });
                 } catch (JSONException e) {

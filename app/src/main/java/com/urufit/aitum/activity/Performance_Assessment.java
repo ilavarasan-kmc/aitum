@@ -23,7 +23,8 @@ public class Performance_Assessment extends AppCompatActivity {
         binding.cardTech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Technical_Assessment.class);
+                Intent intent=new Intent(getApplicationContext(),AssessmentTestActivity.class);
+                intent.putExtra("testname",binding.txtTechAssessment.getText().toString());
                 startActivity(intent);
             }
         });
@@ -31,7 +32,8 @@ public class Performance_Assessment extends AppCompatActivity {
         binding.cardSprint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Sprint.class);
+                Intent intent=new Intent(getApplicationContext(),AssessmentTestActivity.class);
+                intent.putExtra("testname",binding.txtSprint.getText().toString());
                 startActivity(intent);
             }
         });
@@ -39,7 +41,8 @@ public class Performance_Assessment extends AppCompatActivity {
         binding.cardPower.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Power.class);
+                Intent intent=new Intent(getApplicationContext(),AssessmentTestActivity.class);
+                intent.putExtra("testname",binding.txtPower.getText().toString());
                 startActivity(intent);
             }
         });
@@ -47,7 +50,8 @@ public class Performance_Assessment extends AppCompatActivity {
         binding.cardStrength.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Strength.class);
+                Intent intent=new Intent(getApplicationContext(),AssessmentTestActivity.class);
+                intent.putExtra("testname",binding.txtStrength.getText().toString());
                 startActivity(intent);
             }
         });
@@ -55,7 +59,8 @@ public class Performance_Assessment extends AppCompatActivity {
         binding.cardEndurance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Endurance.class);
+                Intent intent=new Intent(getApplicationContext(),AssessmentTestActivity.class);
+                intent.putExtra("testname",binding.txtEndurance.getText().toString());
                 startActivity(intent);
             }
         });
@@ -63,7 +68,8 @@ public class Performance_Assessment extends AppCompatActivity {
         binding.cardCod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),COD.class);
+                Intent intent=new Intent(getApplicationContext(),AssessmentTestActivity.class);
+                intent.putExtra("testname",binding.txtCod.getText().toString());
                 startActivity(intent);
             }
         });

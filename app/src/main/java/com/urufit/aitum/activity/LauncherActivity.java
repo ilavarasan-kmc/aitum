@@ -8,7 +8,6 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.urufit.aitum.MainActivity;
 import com.urufit.aitum.R;
 import com.urufit.aitum.ui.SharedPreferenc;
 

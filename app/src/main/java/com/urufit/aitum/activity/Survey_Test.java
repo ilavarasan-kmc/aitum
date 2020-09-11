@@ -17,7 +17,7 @@ import com.trafi.ratingseekbar.RatingSeekBar;
 import com.urufit.aitum.R;
 import com.urufit.aitum.model.Question;
 
-public class sur_test extends Fragment implements RatingSeekBar.OnRatingSeekBarChangeListener {
+public class Survey_Test extends Fragment implements RatingSeekBar.OnRatingSeekBarChangeListener {
     TextView ratingLabel;
     private Question q_data;
     private TextView textview_q_title;

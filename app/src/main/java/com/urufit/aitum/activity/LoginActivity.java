@@ -13,8 +13,7 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.Callback;
 import com.amazonaws.mobile.client.SignInUIOptions;
 import com.amazonaws.mobile.client.UserStateDetails;
-import com.google.android.material.navigation.NavigationView;
-import com.urufit.aitum.MainActivity;
+
 import com.urufit.aitum.R;
 import com.urufit.aitum.ui.SharedPreferenc;
 

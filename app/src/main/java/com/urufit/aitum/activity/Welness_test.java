@@ -2,6 +2,7 @@ package com.urufit.aitum.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +63,16 @@ public class Welness_test extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool); // get the reference of Toolbar
         toolbar.setTitle("Wellness Questionnaire");
+        toolbar.setTitleTextAppearance(getApplicationContext(),R.style.CustomFontStyle);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
         AWSMobileClient.getInstance().getTokens(new com.amazonaws.mobile.client.Callback<Tokens>() {
@@ -160,7 +170,9 @@ public class Welness_test extends AppCompatActivity {
                             builder.setMessage("Thanks for your Rating !!!");
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    finish();
+                                   /* Intent intent=new Intent(getApplicationContext(),Athlete_Home_Activity.class);
+                                    startActivity(intent);*/
+                                   finish();
                                 }
                             });
                             builder.show();

@@ -42,6 +42,7 @@ public class ScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
         toolbar = findViewById(R.id.toolbar_customs);
         toolbar.setTitle("Schedule");
+        toolbar.setTitleTextAppearance(getApplicationContext(),R.style.CustomFontStyle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

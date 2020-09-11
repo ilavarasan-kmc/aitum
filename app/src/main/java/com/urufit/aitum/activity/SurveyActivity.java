@@ -11,8 +11,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.gson.Gson;
 import com.urufit.aitum.R;
 import com.urufit.aitum.adapter.AdapterFragmentQ;
-import com.urufit.aitum.fragment.FragmentEnd;
-import com.urufit.aitum.fragment.FragmentRadioboxes;
 import com.urufit.aitum.fragment.FragmentStart;
 import com.urufit.aitum.model.Question;
 import com.urufit.aitum.model.SurveyPojo;
@@ -78,7 +76,7 @@ public class SurveyActivity extends AppCompatActivity {
             }
 */
             if (mQuestion.getQuestionType().equals("Radioboxes")) {
-                sur_test frag = new sur_test();
+                Survey_Test frag = new Survey_Test();
                 Bundle xBundle = new Bundle();
                 xBundle.putSerializable("data", mQuestion);
                 xBundle.putString("style", style_string);

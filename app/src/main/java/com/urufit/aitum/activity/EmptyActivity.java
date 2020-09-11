@@ -59,6 +59,8 @@ public class EmptyActivity extends AppCompatActivity {
                     SingletonSession.Instance().setRole(arrayList.get(0));
                 }
 
+                SingletonSession.Instance().setRoleList(arrayList);
+
                 if ("athlete".equalsIgnoreCase(mRole)) {
                     Intent intent = new Intent(getApplicationContext(), Athlete_Home_Activity.class);
                     intent.putExtra("Name", name);
@@ -75,6 +77,7 @@ public class EmptyActivity extends AppCompatActivity {
                     intent.putExtra("scopelist", CustomScopeList);
                     startActivity(intent);
                 }
+                SingletonSession.Instance().setScopeList(CustomScopeList);
             }
 
             @Override

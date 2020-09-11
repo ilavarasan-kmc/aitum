@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".ui.MyApp"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher_foreground"
@@ -19,9 +20,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:theme">
-        <activity android:name=".activity.PlayerProfileActivity"></activity>
+        <activity android:name=".activity.ComingSoonActivity"></activity>
+        <activity android:name=".activity.PhysicalTestingActivity" />
+        <activity android:name=".activity.AssessmentTestActivity" />
+        <activity android:name=".activity.PlayerProfileActivity" />
         <activity android:name=".activity.Welness_test" />
-        <activity android:name=".activity.sur_test" />
+        <activity android:name=".activity.Survey_Test"
+            tools:ignore="Instantiatable" />
         <activity android:name=".activity.ServiceActivity" />
         <activity android:name=".activity.SplashScreen">
             <intent-filter>
@@ -31,11 +36,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".activity.EmptyActivity" />
         <activity android:name=".activity.SliderScreen" />
         <activity android:name=".activity.HomeActivity" />
-        <activity android:name=".fragment.ActivityFragment" />
         <activity android:name=".fragment.ManagerCalenderFragment" />
         <activity android:name=".activity.Monitoring" />
         <activity android:name=".activity.Performance_Assessment" />
@@ -44,30 +47,20 @@
         <activity android:name=".activity.Wellbeing" />
         <activity android:name=".activity.Load_Quantification" />
         <activity android:name=".activity.Kinanthropometry" />
-        <activity android:name=".activity.Sprint" />
         <activity android:name=".activity.Technical_Assessment" />
-        <activity android:name=".activity.COD" />
-        <activity android:name=".activity.Strength" />
-        <activity android:name=".activity.Power" />
-        <activity android:name=".activity.Endurance" />
         <activity android:name=".activity.SurveyActivity" />
         <activity android:name=".activity.ReportsActivity" />
         <activity android:name=".activity.Athlete_Home_Activity" />
-        <activity android:name=".activity.TodoActivity" />
         <activity android:name=".activity.ScheduleActivity" />
         <activity android:name=".activity.PlayerHomeActivity" />
-        <activity android:name=".activity.TeamProfileActivity"/>
-        <activity android:name=".ui.ImagePickerActivity"/>
-        <activity android:name=".activity.AddScheduleActivity"/>
-        <activity android:name=".activity.DummyTest"/>
-
+        <activity android:name=".activity.TeamProfileActivity" />
+        <activity android:name=".ui.ImagePickerActivity" />
+        <activity android:name=".activity.AddScheduleActivity" />
         <!-- uCrop cropping activity -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- cache directory file provider paths -->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- cache directory file provider paths -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -81,7 +74,6 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
-
     </application>
 
 </manifest>

@@ -30,7 +30,7 @@ public class Monitoring extends AppCompatActivity {
         binding.cardView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Load_Quantification.class);
+                Intent intent=new Intent(getApplicationContext(),ComingSoonActivity.class);
                 startActivity(intent);
             }
         });
@@ -38,7 +38,7 @@ public class Monitoring extends AppCompatActivity {
         binding.cardView3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Kinanthropometry.class);
+                Intent intent=new Intent(getApplicationContext(),ComingSoonActivity.class);
                 startActivity(intent);
             }
         });
